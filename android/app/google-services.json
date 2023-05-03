@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476872845583",
+    "project_id": "health-watch-4e3db",
+    "storage_bucket": "health-watch-4e3db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476872845583:android:965dbf56342b37aee6767a",
+        "android_client_info": {
+          "package_name": "com.example.health_watch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476872845583-e2lol0qd425pu2ntubp3u4q9qr264cf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvUBkzW_l0tOMhviGf9rvyqkffEkUQlxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476872845583-e2lol0qd425pu2ntubp3u4q9qr264cf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
