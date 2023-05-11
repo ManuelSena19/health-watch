@@ -17,14 +17,17 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: const Text("Health Watch"),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.notifications_outlined))
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
         ],
       ),
-      drawer: drawerWidget(),
+      drawer: drawerWidget(context),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               const Image(
@@ -50,12 +53,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 5,),
+          const SizedBox(
+            height: 5,
+          ),
           const Divider(
             height: 10,
             thickness: 3,
           ),
-          const SizedBox(height: 5,),
+          const SizedBox(
+            height: 5,
+          ),
           Stack(
             children: [
               const Image(
@@ -80,6 +87,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          const Divider(
+            height: 10,
+            thickness: 3,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Stack(
+            children: [
+              const Image(
+                image: AssetImage('assets/chat.jpeg'),
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                right: 10,
+                child: Container(
+                  width: 600,
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Click here to check your chats',
+                    style: TextStyle(fontSize: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
           ),
         ],
       ),

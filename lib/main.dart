@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       initialRoute: FirebaseAuth.instance.currentUser == null
           ? loginRoute
           : homescreenRoute,
-      title: 'Flutter Demo',
+      title: 'Health Watch',
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
