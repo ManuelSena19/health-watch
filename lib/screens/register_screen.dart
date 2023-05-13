@@ -534,9 +534,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             } else if (e.code == 'email-already-in-use') {
                               await showErrorDialog(context,
                                   'Email belongs to other user: Register with a different email');
-                            } /*else {
+                            } else {
                               await showErrorDialog(context, 'Error: $e.code');
-                            }*/
+                            }
                           } on TypeError catch (e) {
                             await showErrorDialog(context, e.toString());
                           } catch (e) {

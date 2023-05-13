@@ -19,6 +19,10 @@ Widget drawerWidget(BuildContext context) {
     Navigator.pushReplacementNamed(context, route);
   }
 
+  void pushNamed(String route){
+    Navigator.pushNamed(context, route);
+  }
+
   return Drawer(
     elevation: 0,
     child: FutureBuilder<String?>(
@@ -26,22 +30,55 @@ Widget drawerWidget(BuildContext context) {
           FirebaseAuth.instance.currentUser!.email.toString()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(strokeWidth: 0,);
         } else if (snapshot.hasData) {
           final name = snapshot.data!;
+          final email = FirebaseAuth.instance.currentUser!.email.toString();
           return ListView(
             children: [
-              Text(name),
-              const SizedBox(
-                height: 50,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: CircleAvatar(
+                      radius: 45,
+                      backgroundColor: Colors.white,
+                      child: Image(
+                        image: AssetImage("assets/icon.jpg"),
+                        height: 75,
+                        width: 75,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text('Hello, $name', style: const TextStyle(fontSize: 25, color: Colors.lightBlue),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text('@$email', style: const TextStyle(fontSize: 12,),),
+                  )
+                ],
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
-              const ListTile(
-                leading: Icon(Icons.home_outlined),
-                title: Text("Home"),
+              const Divider(
+                height: 10,
+                thickness: 3,
+              ),
+              ListTile(
+                leading: const Icon(Icons.home_outlined),
+                title: const Text("Home"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushNamed(homescreenRoute);
+                },
               ),
               const ListTile(
                 leading: Icon(Icons.person_outlined),
@@ -88,7 +125,10 @@ Widget drawerWidget(BuildContext context) {
             ],
           );
         } else {
-          return const SnackBar(content: Text("Username Not Found!"), elevation: 0,);
+          return const SnackBar(
+            content: Text("Username Not Found!"),
+            elevation: 0,
+          );
         }
       },
     ),
