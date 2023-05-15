@@ -81,7 +81,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String bloodGroup,
       String allergies,
       String healthConditions,
-      String gender) async {
+      String gender,
+      String imagePath) async {
     final CollectionReference users = _firestore.collection('users');
     await users.doc(email).set({
       'username': username,
@@ -95,7 +96,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'bloodGroup': bloodGroup,
       'allergies': allergies,
       'healthConditions': healthConditions,
-      'gender': gender
+      'gender': gender,
+      'imagePath': imagePath
     });
   }
 
@@ -505,6 +507,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 conditionController.text == ""
                                     ? "None"
                                     : conditionController.text;
+                            String imagePath =
+                                "https://th.bing.com/th/id/R.e62421c9ba5aeb764163aaccd64a9583?rik=DzXjlnhTgV5CvA&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_210318.png&ehk=952QCsChZS0znBch2iju8Vc%2fS2aIXvqX%2f0zrwkjJ3GA%3d&risl=&pid=ImgRaw&r=0";
                             final form = formKey.currentState!;
                             if (form.validate()) {}
                             await FirebaseAuth.instance
@@ -522,7 +526,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 bloodGroup,
                                 allergies,
                                 healthConditions,
-                                gender);
+                                gender,
+                                imagePath);
                             pushReplacementRoute(logicRoute);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {

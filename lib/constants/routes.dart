@@ -4,3 +4,4 @@ const verifyEmailRoute = '/verify-email/';
 const resetPasswordRoute = '/reset-password/';
 const homescreenRoute = '/home-screen/';
 const logicRoute = '/logic/';
+const profileRoute = '/profile-screen/';

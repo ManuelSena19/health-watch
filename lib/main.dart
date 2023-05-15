@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:health_watch/constants/logic.dart';
 import 'package:health_watch/screens/home_screen.dart';
 import 'package:health_watch/screens/login_screen.dart';
+import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/register_screen.dart';
 import 'package:health_watch/screens/reset_password_screen.dart';
 import 'package:health_watch/screens/verify_email_screen.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const RegisterScreen(),
         verifyEmailRoute: (context) => const VerifyEmailScreen(),
         resetPasswordRoute: (context) => const ResetPasswordScreen(),
-        homescreenRoute: (context) => const HomeScreen()
+        homescreenRoute: (context) => const HomeScreen(),
+        profileRoute: (context) => const ProfileScreen(),
       },
     );
   }

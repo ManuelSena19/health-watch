@@ -30,7 +30,7 @@ Widget drawerWidget(BuildContext context) {
           FirebaseAuth.instance.currentUser!.email.toString()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(strokeWidth: 0,);
+          return const LinearProgressIndicator();
         } else if (snapshot.hasData) {
           final name = snapshot.data!;
           final email = FirebaseAuth.instance.currentUser!.email.toString();
@@ -80,10 +80,13 @@ Widget drawerWidget(BuildContext context) {
                   pushNamed(homescreenRoute);
                 },
               ),
-              const ListTile(
-                leading: Icon(Icons.person_outlined),
-                title: Text("Profile"),
+              ListTile(
+                leading: const Icon(Icons.person_outlined),
+                title: const Text("Profile"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushNamed(profileRoute);
+                },
               ),
               const ListTile(
                 leading: Icon(Icons.chat_outlined),
