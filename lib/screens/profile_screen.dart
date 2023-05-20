@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/profile_widget.dart';
+import 'package:health_watch/constants/user_data.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -14,24 +15,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final String _email = FirebaseAuth.instance.currentUser?.email ?? '';
 
-  Future<String?> getFieldFromFirestore(String email, String field) async {
-    final userRef = FirebaseFirestore.instance.collection('users').doc(email);
-    final userSnapshot = await userRef.get();
-    if (userSnapshot.exists) {
-      final userData = userSnapshot.data() as Map<String, dynamic>;
-      final value = userData[field] as String?;
-      return value;
-    }
-    return null;
-  }
-
-  Future<Map<String, dynamic>> getUserData(String email) async {
-    final userRef = FirebaseFirestore.instance.collection('users').doc(email);
-    final userSnapshot = await userRef.get();
-    if (userSnapshot.exists) {
-      return userSnapshot.data() as Map<String, dynamic>;
-    }
-    return {};
+  void pushRoute(String route) {
+    Navigator.pushNamed(context, route);
   }
 
   Widget buildName() => FutureBuilder<Map<String, dynamic>>(
@@ -92,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Bio-data',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                const Padding(padding: EdgeInsets.all(10)),
+                const Padding(padding: EdgeInsets.all(5)),
                 Text(
                   "Date of birth: $day/$month/$year",
                   style: const TextStyle(fontSize: 20, height: 1.4),
@@ -109,15 +94,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   "Weight: $weight kg",
                   style: const TextStyle(fontSize: 20, height: 1.4),
                 ),
-                Text(
-                  "BMI: $bmi",
-                  style: TextStyle(
-                      fontSize: 20,
-                      height: 1.4,
-                      color: double.parse(bmi!) >= 18.5 &&
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("BMI: ", style: TextStyle(fontSize: 20, height: 1.4),),
+                    Text(
+                      "$bmi",
+                      style: TextStyle(
+                          fontSize: 20,
+                          height: 1.4,
+                          color: double.parse(bmi!) >= 18.5 &&
                               double.parse(bmi) <= 24.9
-                          ? Colors.green
-                          : Colors.red),
+                              ? Colors.green
+                              : Colors.red),
+                    ),
+                  ],
                 ),
                 Text(
                   "Blood Type: $bloodGroup",
@@ -146,6 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
+        elevation: 0,
       ),
       drawer: drawerWidget(context),
       body: ListView(
@@ -174,10 +167,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return const SnackBar(content: Text("No data"));
                 }
               }),
-          const Padding(padding: EdgeInsets.all(20)),
+          const SizedBox(height: 20,),
           buildName(),
-          const Padding(padding: EdgeInsets.all(30)),
+          const SizedBox(height: 40,),
           buildBio(),
+          const SizedBox(height: 60),
+          Container(
+            height: 60,
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 100),
+            child: ElevatedButton(
+              onPressed: (){
+                pushRoute(editProfileRoute);
+              },
+              child: Container(
+                width: 150,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                child: const Text(
+                  "Edit Profile",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

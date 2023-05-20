@@ -497,7 +497,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             String bmi = (double.parse(weight) /
                                     double.parse(height) *
                                     double.parse(height))
-                                .toString();
+                                .toStringAsFixed(2);
                             String gender = selectedGender;
                             String bloodGroup = selectedBloodGroup;
                             String allergies = allergyController.text == ""

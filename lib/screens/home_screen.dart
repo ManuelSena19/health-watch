@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.lightBlue,
         elevation: 0,
         title: const Text("Health Watch"),
+        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
