@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/utilities/doctor_card.dart';
 
 class AppointmentCard extends StatefulWidget {
   const AppointmentCard({Key? key}) : super(key: key);
@@ -14,12 +15,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 10,),
-        const Text(
-          "Today",
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20,),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -99,11 +94,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 20,),
-        const Text(
-          "Top Pharmacists",
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ],
     );
