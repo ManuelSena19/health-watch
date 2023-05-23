@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:health_watch/utilities/doctor_card.dart';
 
 class AppointmentCard extends StatefulWidget {
   const AppointmentCard({Key? key}) : super(key: key);
@@ -39,7 +38,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         children: const [
                           Text(
                             'Dr. Emmanuel Doke',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                           SizedBox(
                             height: 5,
@@ -125,7 +124,7 @@ class ScheduleCard extends StatelessWidget {
           ),
           Text(
             'Monday, 11/28/2022',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
           SizedBox(
             width: 20,
@@ -141,7 +140,7 @@ class ScheduleCard extends StatelessWidget {
           Flexible(
               child: Text(
             '2:00 PM',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ))
         ],
       ),

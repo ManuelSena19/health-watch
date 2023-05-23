@@ -7,3 +7,4 @@ const logicRoute = '/logic/';
 const profileRoute = '/profile-screen/';
 const editProfileRoute = '/edit-profile-screen/';
 const appointmentRoute = '/appointment-route/';
+const calendarRoute = '/calendar-route/';

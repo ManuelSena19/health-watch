@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -94,10 +93,13 @@ Widget drawerWidget(BuildContext context) {
                 title: Text("Chats"),
                 iconColor: Colors.lightBlue,
               ),
-              const ListTile(
-                leading: Icon(Icons.calendar_month_outlined),
-                title: Text("Calendar"),
+              ListTile(
+                leading: const Icon(Icons.calendar_month_outlined),
+                title: const Text("Calendar"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushNamed(calendarRoute);
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.today_outlined),
