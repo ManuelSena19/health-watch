@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:health_watch/constants/logic.dart';
+import 'package:health_watch/screens/apppointment_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
 import 'package:health_watch/screens/home_screen.dart';
 import 'package:health_watch/screens/login_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         homescreenRoute: (context) => const HomeScreen(),
         profileRoute: (context) => const ProfileScreen(),
         editProfileRoute: (context) => const EditProfileScreen(),
+        appointmentRoute: (context) => const AppointmentScreen(),
       },
     );
   }

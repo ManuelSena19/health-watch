@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -30,7 +31,7 @@ Widget drawerWidget(BuildContext context) {
           FirebaseAuth.instance.currentUser!.email.toString()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const LinearProgressIndicator();
+          return const Center(child: LinearProgressIndicator());
         } else if (snapshot.hasData) {
           final name = snapshot.data!;
           final email = FirebaseAuth.instance.currentUser!.email.toString();
@@ -98,10 +99,13 @@ Widget drawerWidget(BuildContext context) {
                 title: Text("Calendar"),
                 iconColor: Colors.lightBlue,
               ),
-              const ListTile(
-                leading: Icon(Icons.today_outlined),
-                title: Text("Appointments"),
+              ListTile(
+                leading: const Icon(Icons.today_outlined),
+                title: const Text("Appointments"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushNamed(appointmentRoute);
+                },
               ),
               const Divider(
                 height: 10,

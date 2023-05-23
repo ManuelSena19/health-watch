@@ -21,9 +21,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget buildName() => FutureBuilder<Map<String, dynamic>>(
         future: getUserData(_email),
-        builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Container();
           } else if (snapshot.hasData) {
             final userData = snapshot.data!;
             final String? name = userData['username'] as String?;
@@ -53,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Container();
         } else if (snapshot.hasData) {
           final userData = snapshot.data!;
           final String? day = userData['day'] as String?;
@@ -98,14 +99,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("BMI: ", style: TextStyle(fontSize: 20, height: 1.4),),
+                    const Text(
+                      "BMI: ",
+                      style: TextStyle(fontSize: 20, height: 1.4),
+                    ),
                     Text(
                       "$bmi",
                       style: TextStyle(
                           fontSize: 20,
                           height: 1.4,
                           color: double.parse(bmi!) >= 18.5 &&
-                              double.parse(bmi) <= 24.9
+                                  double.parse(bmi) <= 24.9
                               ? Colors.green
                               : Colors.red),
                     ),
@@ -139,6 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         elevation: 0,
+        title: const Text('Profile'),
       ),
       drawer: drawerWidget(context),
       body: ListView(
@@ -167,21 +172,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return const SnackBar(content: Text("No data"));
                 }
               }),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           buildName(),
-          const SizedBox(height: 40,),
+          const SizedBox(
+            height: 40,
+          ),
           buildBio(),
           const SizedBox(height: 60),
           Container(
             height: 60,
-            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 100),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 100),
             child: ElevatedButton(
-              onPressed: (){
+              onPressed: () {
                 pushRoute(editProfileRoute);
               },
               child: Container(
                 width: 150,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
                 child: const Text(
                   "Edit Profile",
                   textAlign: TextAlign.center,

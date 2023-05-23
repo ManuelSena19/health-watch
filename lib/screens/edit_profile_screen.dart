@@ -87,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (BuildContext context,
             AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: LinearProgressIndicator());
           } else if (snapshot.hasData) {
             final userData = snapshot.data!;
             String? name = userData['username'] as String?;
@@ -231,8 +231,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: ElevatedButton(
                     onPressed: () async {
                       String bmi = (double.parse(weightController.text) /
-                          (double.parse(heightController.text) *
-                              double.parse(heightController.text)))
+                              (double.parse(heightController.text) *
+                                  double.parse(heightController.text)))
                           .toStringAsFixed(2);
                       try {
                         await uploadImageToFirebase(_imageFile!);
@@ -277,7 +277,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50,)
+                const SizedBox(
+                  height: 50,
+                )
               ],
             );
           } else {
