@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/push_routes.dart';
+import 'package:health_watch/constants/routes.dart';
 
 class DoctorCard extends StatefulWidget {
   const DoctorCard({Key? key}) : super(key: key);
@@ -8,6 +10,7 @@ class DoctorCard extends StatefulWidget {
 }
 
 class _DoctorCardState extends State<DoctorCard> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +67,9 @@ class _DoctorCardState extends State<DoctorCard> {
             ],
           ),
         ),
-        onTap: (){},
+        onTap: (){
+          pushRoute(context, detailsRoute);
+        },
       ),
     );
   }

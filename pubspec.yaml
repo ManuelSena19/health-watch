@@ -24,6 +24,8 @@ dependencies:
   path: ^1.8.2
   firebase_storage: ^11.2.1
   font_awesome_flutter: ^10.4.0
+  table_calendar: ^3.0.9
+  lottie: ^2.3.2
 
 dev_dependencies:
   flutter_test:

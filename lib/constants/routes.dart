@@ -8,3 +8,6 @@ const profileRoute = '/profile-screen/';
 const editProfileRoute = '/edit-profile-screen/';
 const appointmentRoute = '/appointment-route/';
 const calendarRoute = '/calendar-route/';
+const detailsRoute = 'pharmacist-details/';
+const successRoute = '/successful-booking/';
+const chatRoute = '/chat-screen/';

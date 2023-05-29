@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,12 +16,8 @@ Future<String?> getNameFromFirestore(String email) async {
 }
 
 Widget drawerWidget(BuildContext context) {
-  void pushReplacementRoute(String route) {
-    Navigator.pushReplacementNamed(context, route);
-  }
-
-  void pushNamed(String route){
-    Navigator.pushNamed(context, route);
+  void pushReplacementNamedRoute(String route){
+    pushReplacementRoute(context, route);
   }
 
   return Drawer(
@@ -57,11 +54,20 @@ Widget drawerWidget(BuildContext context) {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text('Hello, $name', style: const TextStyle(fontSize: 25, color: Colors.lightBlue),),
+                    child: Text(
+                      'Hello, $name',
+                      style: const TextStyle(
+                          fontSize: 25, color: Colors.lightBlue),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text('@$email', style: const TextStyle(fontSize: 12,),),
+                    child: Text(
+                      '@$email',
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -76,37 +82,40 @@ Widget drawerWidget(BuildContext context) {
                 leading: const Icon(Icons.home_outlined),
                 title: const Text("Home"),
                 iconColor: Colors.lightBlue,
-                onTap: (){
-                  pushNamed(homescreenRoute);
+                onTap: () {
+                  pushRoute(context, homescreenRoute);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.person_outlined),
                 title: const Text("Profile"),
                 iconColor: Colors.lightBlue,
-                onTap: (){
-                  pushNamed(profileRoute);
+                onTap: () {
+                  pushRoute(context, profileRoute);
                 },
               ),
-              const ListTile(
-                leading: Icon(Icons.chat_outlined),
-                title: Text("Chats"),
+              ListTile(
+                leading: const Icon(Icons.chat_outlined),
+                title: const Text("Chats"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushRoute(context, chatRoute);
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.calendar_month_outlined),
                 title: const Text("Calendar"),
                 iconColor: Colors.lightBlue,
-                onTap: (){
-                  pushNamed(calendarRoute);
+                onTap: () {
+                  pushRoute(context, calendarRoute);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.today_outlined),
                 title: const Text("Appointments"),
                 iconColor: Colors.lightBlue,
-                onTap: (){
-                  pushNamed(appointmentRoute);
+                onTap: () {
+                  pushRoute(context, appointmentRoute);
                 },
               ),
               const Divider(
@@ -124,7 +133,7 @@ Widget drawerWidget(BuildContext context) {
                 iconColor: Colors.lightBlue,
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
-                  pushReplacementRoute(loginRoute);
+                  pushReplacementNamedRoute(loginRoute);
                 },
               ),
               const Divider(

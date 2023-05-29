@@ -4,12 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:health_watch/constants/logic.dart';
 import 'package:health_watch/screens/apppointment_screen.dart';
 import 'package:health_watch/screens/calendar_screen.dart';
+import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
 import 'package:health_watch/screens/home_screen.dart';
 import 'package:health_watch/screens/login_screen.dart';
+import 'package:health_watch/screens/pharmacist_details_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/register_screen.dart';
 import 'package:health_watch/screens/reset_password_screen.dart';
+import 'package:health_watch/screens/successful_booking_screen.dart';
 import 'package:health_watch/screens/verify_email_screen.dart';
 import 'constants/routes.dart';
 import 'firebase_options.dart';
@@ -47,6 +50,9 @@ class MyApp extends StatelessWidget {
         editProfileRoute: (context) => const EditProfileScreen(),
         appointmentRoute: (context) => const AppointmentScreen(),
         calendarRoute: (context) => const CalendarScreen(),
+        detailsRoute: (context) => const PharmacistDetailsScreen(),
+        successRoute: (context) => const AppointmentBooked(),
+        chatRoute: (context) => const ChatScreen(),
       },
     );
   }

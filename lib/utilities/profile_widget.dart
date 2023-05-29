@@ -7,18 +7,16 @@ class ProfileWidget extends StatelessWidget {
   final VoidCallback onClicked;
 
   const ProfileWidget(
-      {
-        Key? key,
-        required this.imagePath,
-        required this.onClicked,
-        required this.isEdit
-      })
+      {Key? key,
+      required this.imagePath,
+      required this.onClicked,
+      required this.isEdit})
       : super(key: key);
 
   Widget buildImage() {
     final image = imagePath.contains('https://')
         ? NetworkImage(imagePath)
-        :FileImage(File(imagePath));
+        : FileImage(File(imagePath));
     return ClipOval(
       child: Material(
         color: Colors.transparent,
@@ -39,13 +37,14 @@ class ProfileWidget extends StatelessWidget {
     required Widget child,
     required double all,
     required Color color,
-  }) => ClipOval(
-    child: Container(
-      padding: EdgeInsets.all(all),
-      color: color,
-      child: child,
-    ),
-  );
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {

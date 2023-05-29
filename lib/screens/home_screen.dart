@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/push_routes.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
+import 'package:health_watch/utilities/stack_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,8 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,30 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 15,
           ),
-          Stack(
-            children: [
-              const Image(
-                image: AssetImage('assets/home.jpeg'),
-                width: double.infinity,
-                height: 350,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                right: 10,
-                child: Container(
-                  width: 600,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Click here to talk to a licensed pharmacist',
-                    style: TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+          GestureDetector(
+            child: stackWidget("assets/home.jpeg",
+                'Click here to talk to a licensed pharmacist'),
+            onTap: (){
+              pushRoute(context, appointmentRoute);
+            },
           ),
           const SizedBox(
             height: 5,
@@ -66,30 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 5,
           ),
-          Stack(
-            children: [
-              const Image(
-                image: AssetImage('assets/calendar.jpg'),
-                width: double.infinity,
-                height: 350,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                right: 10,
-                child: Container(
-                  width: 600,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Click here to check your appointments',
-                    style: TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+          GestureDetector(
+            child: stackWidget(
+                'assets/calendar.jpg', 'Click here to check your appointments'),
+            onTap: (){
+              pushRoute(context, calendarRoute);
+            },
           ),
           const SizedBox(
             height: 5,
@@ -101,30 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 5,
           ),
-          Stack(
-            children: [
-              const Image(
-                image: AssetImage('assets/chat.jpeg'),
-                width: double.infinity,
-                height: 350,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                right: 10,
-                child: Container(
-                  width: 600,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Click here to check your chats',
-                    style: TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+          GestureDetector(
+            child: stackWidget(
+              'assets/chat.jpeg',
+              'Click here to check your chats',
+            ),
+            onTap: (){
+              pushRoute(context, chatRoute);
+            },
           ),
           const SizedBox(
             height: 5,
