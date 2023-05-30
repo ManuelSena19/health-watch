@@ -6,5 +6,9 @@ PreferredSizeWidget appbarWidget(String title){
     elevation: 0,
     title: Text(title),
     centerTitle: true,
+    actions: [
+      IconButton(
+          onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
+    ],
   );
 }

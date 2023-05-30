@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/profile_widget.dart';
 import 'package:health_watch/constants/user_data.dart';
@@ -140,11 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        elevation: 0,
-        title: const Text('Profile'),
-      ),
+      appBar: appbarWidget('Profile'),
       drawer: drawerWidget(context),
       body: ListView(
         physics: const BouncingScrollPhysics(),

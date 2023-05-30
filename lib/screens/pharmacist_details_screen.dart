@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/constants/user_data.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
+
+String _name = "Emmanuel Sena Doke";
 
 class PharmacistDetailsScreen extends StatefulWidget {
   const PharmacistDetailsScreen({Key? key}) : super(key: key);
@@ -72,43 +76,68 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: const [
-          CircleAvatar(
-            radius: 65,
-            backgroundImage: AssetImage('assets/user.jpg'),
-            backgroundColor: Colors.white,
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
+      future: getPharmacistInfo(_name),
+      builder: (context, snapshot) {
+        final pharmacistInfo = snapshot.data!;
+        final String? certification = pharmacistInfo['certification'] as String?;
+        final String? pharmacy = pharmacistInfo['pharmacy'] as String?;
+        final int? id = pharmacistInfo['id'] as int?;
+        return SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              const CircleAvatar(
+                radius: 65,
+                backgroundImage: AssetImage('assets/user.jpg'),
+                backgroundColor: Colors.white,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Dr $_name",
+                style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.numbers, color: Colors.lightBlue,),
+                  Text(
+                    '$id',
+                    style: const TextStyle(color: Colors.grey, fontSize: 15),
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                certification!,
+                style: const TextStyle(color: Colors.grey, fontSize: 15),
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                pharmacy!,
+                style: const TextStyle(
+                    color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          SizedBox(
-            height: 30,
-          ),
-          Text(
-            "Dr Emmanuel Doke",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Pharm. D (KNUST)",
-            style: TextStyle(color: Colors.grey, fontSize: 15),
-            softWrap: true,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Burma Camp Pharmacy",
-            style: TextStyle(
-                color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-            softWrap: true,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
@@ -118,33 +147,40 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          SizedBox(
-            height: 15,
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
+      future: getPharmacistInfo(_name),
+      builder: (context, snapshot) {
+        final pharmacistInfo = snapshot.data!;
+        final String? about = pharmacistInfo['about'] as String?;
+        return Container(
+          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              const Status(),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                'About',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                about!,
+                style: const TextStyle(fontWeight: FontWeight.bold, height: 1.5),
+                softWrap: true,
+              ),
+            ],
           ),
-          Status(),
-          SizedBox(
-            height: 40,
-          ),
-          Text(
-            'About',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget sapien pretium, aliquet nisl at, viverra lectus. Nulla nec tellus ac lacus pulvinar scelerisque sed ac odio. Sed ultrices ligula at quam fringilla eleifend. Suspendisse ut justo consequat, aliquet urna sed, ultrices mauris.",
-            style: TextStyle(fontWeight: FontWeight.bold, height: 1.5),
-            softWrap: true,
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
@@ -154,18 +190,27 @@ class Status extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        InfoCard(label: 'Patients', value: '100'),
-        SizedBox(
-          width: 15,
-        ),
-        InfoCard(label: 'Experience', value: '10 years'),
-        SizedBox(
-          width: 15,
-        ),
-        InfoCard(label: 'Rating', value: '4.5'),
-      ],
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
+      future: getPharmacistInfo(_name),
+      builder: (context, snapshot) {
+        final pharmacistInfo = snapshot.data!;
+        final String? patients = pharmacistInfo['patients'] as String?;
+        final String? experience = pharmacistInfo['experience'] as String?;
+        final String? rating = pharmacistInfo['rating'] as String?;
+        return Row(
+          children: [
+            InfoCard(label: 'Patients', value: patients!),
+            const SizedBox(
+              width: 15,
+            ),
+            InfoCard(label: 'Experience', value: '$experience years'),
+            const SizedBox(
+              width: 15,
+            ),
+            InfoCard(label: 'Rating', value: rating!),
+          ],
+        );
+      }
     );
   }
 }

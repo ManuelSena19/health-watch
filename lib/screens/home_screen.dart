@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/stack_widget.dart';
 
@@ -15,16 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        elevation: 0,
-        title: const Text("Health Watch"),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
-        ],
-      ),
+      appBar: appbarWidget('Health Watch'),
       drawer: drawerWidget(context),
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -33,9 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 15,
           ),
           GestureDetector(
-            child: stackWidget("assets/home.jpeg",
-                'Click here to talk to a licensed pharmacist'),
-            onTap: (){
+            child: stackWidget(
+              "assets/home.jpeg",
+              'Click here to talk to a licensed pharmacist',
+            ),
+            onTap: () {
               pushRoute(context, appointmentRoute);
             },
           ),
@@ -51,8 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             child: stackWidget(
-                'assets/calendar.jpg', 'Click here to check your appointments'),
-            onTap: (){
+              'assets/calendar.jpg',
+              'Click here to check your appointments',
+            ),
+            onTap: () {
               pushRoute(context, calendarRoute);
             },
           ),
@@ -71,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               'assets/chat.jpeg',
               'Click here to check your chats',
             ),
-            onTap: (){
+            onTap: () {
               pushRoute(context, chatRoute);
             },
           ),
