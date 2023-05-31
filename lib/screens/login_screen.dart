@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:health_watch/constants/routes.dart';
 
@@ -40,9 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent,
-      ),
+      appBar: appbarWidget(''),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(

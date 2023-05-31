@@ -29,6 +29,13 @@
             {
               "client_id": "476872845583-e2lol0qd425pu2ntubp3u4q9qr264cf8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "476872845583-okgcgeu1phos03r6c3ombdtskjdp91s4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.healthWatch"
+              }
             }
           ]
         }

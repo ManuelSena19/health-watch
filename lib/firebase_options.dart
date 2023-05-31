@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDfuU_CldU9ebthY164OIrTcZzB1ZwVE48',
+    appId: '1:476872845583:web:dbaf30fdcc0e2f75e6767a',
+    messagingSenderId: '476872845583',
+    projectId: 'health-watch-4e3db',
+    authDomain: 'health-watch-4e3db.firebaseapp.com',
+    storageBucket: 'health-watch-4e3db.appspot.com',
+    measurementId: 'G-9K1YR45422',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAvUBkzW_l0tOMhviGf9rvyqkffEkUQlxQ',
     appId: '1:476872845583:android:965dbf56342b37aee6767a',
@@ -58,6 +62,16 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDL7s7ZnNGvUusxhPwTgSuaMuBziDVrTpQ',
+    appId: '1:476872845583:ios:876205fe24881806e6767a',
+    messagingSenderId: '476872845583',
+    projectId: 'health-watch-4e3db',
+    storageBucket: 'health-watch-4e3db.appspot.com',
+    iosClientId: '476872845583-okgcgeu1phos03r6c3ombdtskjdp91s4.apps.googleusercontent.com',
+    iosBundleId: 'com.example.healthWatch',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDL7s7ZnNGvUusxhPwTgSuaMuBziDVrTpQ',
     appId: '1:476872845583:ios:876205fe24881806e6767a',
     messagingSenderId: '476872845583',
