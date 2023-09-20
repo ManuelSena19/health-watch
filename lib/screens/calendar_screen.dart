@@ -50,8 +50,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             label: 'Calendar',
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.businessTime),
-              label: 'Appointments')
+            icon: FaIcon(FontAwesomeIcons.businessTime),
+            label: 'Appointments',
+          )
         ],
       ),
     );
@@ -83,11 +84,21 @@ class _CalendarState extends State<Calendar> {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: Text(
+                    "Select Appointment Date",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
                 _tableCalendar(),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                   child: Text(
-                    "Select Consultation Time",
+                    "Select Appointment Time",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -157,11 +168,11 @@ class _CalendarState extends State<Calendar> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 80),
               child: ElevatedButton(
-                onPressed: (){
-                  if(_timeSelected == false || _dateSelected == false){
-                    showErrorDialog(context, "Select a date and time for the appointment");
-                  }
-                  else{
+                onPressed: () {
+                  if (_timeSelected == false || _dateSelected == false) {
+                    showErrorDialog(
+                        context, "Select a date and time for the appointment");
+                  } else {
                     pushReplacementRoute(context, successRoute);
                   }
                 },

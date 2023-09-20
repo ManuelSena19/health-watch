@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
@@ -31,12 +32,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             final String? name = userData['username'] as String?;
             return Column(
               children: [
-                Text(
-                  name!,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      name!,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                      child: VerticalDivider(
+                        color: Colors.black12,
+                        thickness: 2,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        pushRoute(editProfileRoute);
+                      },
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                        color: Colors.lightBlueAccent,
+                        size: 30,
+                      ),
+                    ),
+                  ],
                 ),
                 const Padding(padding: EdgeInsets.all(5)),
                 Text(_email),
@@ -70,68 +93,123 @@ class _ProfileScreenState extends State<ProfileScreen> {
               userData['healthConditions'] as String?;
           final String? gender = userData['gender'] as String?;
 
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Text(
-                  'Bio-data',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const Padding(padding: EdgeInsets.all(5)),
-                Text(
-                  "Date of birth: $day/$month/$year",
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Text(
-                  "Gender: $gender",
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Text(
-                  "Height: $height m",
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Text(
-                  "Weight: $weight kg",
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "BMI: ",
-                      style: TextStyle(fontSize: 20, height: 1.4),
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        ProfileCard(
+                          label: 'Height',
+                          value: "$height m",
+                        ),
+                        const SizedBox(width: 10),
+                        ProfileCard(
+                          label: 'Weight',
+                          value: "$weight kg",
+                        ),
+                        const SizedBox(width: 10),
+                        ProfileCard(
+                          label: 'BMI',
+                          value: "$bmi",
+                        ),
+                      ],
                     ),
-                    Text(
-                      "$bmi",
-                      style: TextStyle(
-                          fontSize: 20,
-                          height: 1.4,
-                          color: double.parse(bmi!) >= 18.5 &&
-                                  double.parse(bmi) <= 24.9
-                              ? Colors.green
-                              : Colors.red),
+                    const SizedBox(height: 10),
+                    Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(
+                            CupertinoIcons.calendar,
+                            size: 30,
+                          ),
+                          iconColor: Colors.lightBlueAccent,
+                          title: const Text(
+                            'Date of Birth',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          subtitle: Text('$day-$month-$year'),
+                          tileColor: Colors.white,
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            CupertinoIcons.person_2,
+                            size: 30,
+                          ),
+                          iconColor: Colors.lightBlueAccent,
+                          title: const Text(
+                            'Gender',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          subtitle: Text('$gender'),
+                          tileColor: Colors.white,
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            CupertinoIcons.drop,
+                            size: 30,
+                          ),
+                          iconColor: Colors.lightBlueAccent,
+                          title: const Text(
+                            'Blood Type',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          subtitle: Text('$bloodGroup'),
+                          tileColor: Colors.white,
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.coronavirus_outlined,
+                        size: 30,
+                      ),
+                      iconColor: Colors.lightBlueAccent,
+                      title: const Text(
+                        'Allergies',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      subtitle: Text('$allergies', softWrap: true,),
+                      tileColor: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(
+                        CupertinoIcons.info,
+                        size: 30,
+                      ),
+                      iconColor: Colors.lightBlueAccent,
+                      title: const Text(
+                        'Health Conditions',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      subtitle: Text('$healthConditions', softWrap: true,),
+                      tileColor: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
-                Text(
-                  "Blood Type: $bloodGroup",
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Text(
-                  "Allergies: $allergies",
-                  maxLines: 5,
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-                Text(
-                  "Health Conditions: $healthConditions",
-                  maxLines: 5,
-                  style: const TextStyle(fontSize: 20, height: 1.4),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         } else {
           return const SnackBar(content: Text("No data"));
@@ -144,9 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: appbarWidget('Profile'),
       drawer: drawerWidget(context),
       body: ListView(
-        physics: const BouncingScrollPhysics(),
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(10)),
           FutureBuilder(
               future: getUserData(_email),
               builder: (BuildContext context,
@@ -160,44 +236,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 } else if (snapshot.hasData) {
                   final userData = snapshot.data!;
                   final String? imagePath = userData['imagePath'] as String?;
-                  return ProfileWidget(
-                    onClicked: () {},
-                    imagePath: imagePath!,
-                    isEdit: false,
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 180,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.lightBlue, Colors.white],
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: ProfileWidget(
+                          onClicked: () {},
+                          imagePath: imagePath!,
+                          isEdit: false,
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return const SnackBar(content: Text("No data"));
                 }
               }),
           const SizedBox(
-            height: 20,
+            height: 5,
           ),
           buildName(),
           const SizedBox(
-            height: 40,
+            height: 10,
           ),
           buildBio(),
-          const SizedBox(height: 60),
-          Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 100),
-            child: ElevatedButton(
-              onPressed: () {
-                pushRoute(editProfileRoute);
-              },
-              child: Container(
-                width: 150,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: const Text(
-                  "Edit Profile",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class ProfileCard extends StatelessWidget {
+  const ProfileCard({super.key, required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: Column(
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                  color: Colors.lightBlue,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              value,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }
