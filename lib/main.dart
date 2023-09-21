@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const RegisterScreen(),
         verifyEmailRoute: (context) => const VerifyEmailScreen(),
         resetPasswordRoute: (context) => const ResetPasswordScreen(),
-        homescreenRoute: (context) => const HomeScreen(),
+        homescreenRoute: (context) => const MainNavigationScreen(),
         profileRoute: (context) => const ProfileScreen(),
         editProfileRoute: (context) => const EditProfileScreen(),
         appointmentRoute: (context) => const AppointmentScreen(),

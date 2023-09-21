@@ -42,7 +42,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       sendVerificationEmail();
       timer = Timer.periodic(
         const Duration(seconds: 3),
-            (_) => checkEmailVerified(),
+        (_) => checkEmailVerified(),
       );
     }
   }
@@ -55,27 +55,27 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const HomeScreen()
+      ? const MainNavigationScreen()
       : Scaffold(
-    appBar: AppBar(
-      title: const Text('Verify Email'),
-    ),
-    body: Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Text(
-            'Check your email to verify your account. Check your inbox or your spam folder.',
-            style: TextStyle(fontSize: 20),
+          appBar: AppBar(
+            title: const Text('Verify Email'),
           ),
-        ),
-        TextButton(
-            onPressed: sendVerificationEmail,
-            child: const Text(
-              'Resend Mail',
-              style: TextStyle(fontSize: 20),
-            ))
-      ],
-    ),
-  );
+          body: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(
+                  'Check your email to verify your account. Check your inbox or your spam folder.',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              TextButton(
+                  onPressed: sendVerificationEmail,
+                  child: const Text(
+                    'Resend Mail',
+                    style: TextStyle(fontSize: 20),
+                  ))
+            ],
+          ),
+        );
 }

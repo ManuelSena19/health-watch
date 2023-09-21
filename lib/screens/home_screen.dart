@@ -1,9 +1,71 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/screens/apppointment_screen.dart';
+import 'package:health_watch/screens/chat_screen.dart';
+import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/stack_widget.dart';
+
+final List<Widget> _screens = [
+  const HomeScreen(),
+  const AppointmentScreen(),
+  const ChatScreen(),
+  const ProfileScreen(),
+];
+
+class MainNavigationScreen extends StatefulWidget {
+  const MainNavigationScreen({super.key});
+
+  @override
+  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+}
+
+class _MainNavigationScreenState extends State<MainNavigationScreen> {
+  int _currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index){
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
+        selectedItemColor: Colors.lightBlue,
+        unselectedItemColor: Colors.black,
+        iconSize: 30,
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.today_outlined),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.chat_bubble_text),
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

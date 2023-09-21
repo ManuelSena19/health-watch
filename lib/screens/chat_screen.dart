@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 
@@ -28,6 +29,16 @@ class _ChatScreenState extends State<ChatScreen> {
               time: '0:00',
             );
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        backgroundColor: Colors.lightBlue,
+        elevation: 0,
+        child: const Icon(
+          CupertinoIcons.add,
+          size: 30,
+          color: Colors.white,
         ),
       ),
     );
