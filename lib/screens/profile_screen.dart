@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/constants/user_preferences.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/profile_widget.dart';
-import 'package:health_watch/constants/user_data.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildName() => FutureBuilder<Map<String, dynamic>>(
-        future: getUserData(_email),
+        future: getUserDataFromSharedPrefs(_email),
         builder: (BuildContext context,
             AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 
   Widget buildBio() => FutureBuilder<Map<String, dynamic>>(
-      future: getUserData(_email),
+      future: getUserDataFromSharedPrefs(_email),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -224,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         children: <Widget>[
           FutureBuilder(
-              future: getUserData(_email),
+              future: getUserDataFromSharedPrefs(_email),
               builder: (BuildContext context,
                   AsyncSnapshot<Map<String, dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
