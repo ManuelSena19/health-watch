@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_watch/constants/push_routes.dart';
@@ -16,7 +17,7 @@ Future<String?> getNameFromFirestore(String email) async {
 }
 
 Widget drawerWidget(BuildContext context) {
-  void pushReplacementNamedRoute(String route){
+  void pushReplacementNamedRoute(String route) {
     pushReplacementRoute(context, route);
   }
 
@@ -57,7 +58,10 @@ Widget drawerWidget(BuildContext context) {
                     child: Text(
                       'Hello, $name',
                       style: const TextStyle(
-                          fontSize: 25, color: Colors.lightBlue),
+                        fontSize: 25,
+                        color: Colors.lightBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Padding(
@@ -66,6 +70,7 @@ Widget drawerWidget(BuildContext context) {
                       '@$email',
                       style: const TextStyle(
                         fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   )
@@ -79,7 +84,7 @@ Widget drawerWidget(BuildContext context) {
                 thickness: 3,
               ),
               ListTile(
-                leading: const Icon(Icons.home_outlined),
+                leading: const Icon(CupertinoIcons.home),
                 title: const Text("Home"),
                 iconColor: Colors.lightBlue,
                 onTap: () {
@@ -95,10 +100,10 @@ Widget drawerWidget(BuildContext context) {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.chat_outlined),
+                leading: const Icon(CupertinoIcons.chat_bubble_text),
                 title: const Text("Chats"),
                 iconColor: Colors.lightBlue,
-                onTap: (){
+                onTap: () {
                   pushRoute(context, chatRoute);
                 },
               ),
@@ -128,7 +133,7 @@ Widget drawerWidget(BuildContext context) {
                 iconColor: Colors.lightBlue,
               ),
               ListTile(
-                leading: const Icon(Icons.logout_outlined),
+                leading: const Icon(Icons.logout),
                 title: const Text("Sign Out"),
                 iconColor: Colors.lightBlue,
                 onTap: () async {
