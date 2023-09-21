@@ -14,9 +14,66 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarWidget('Chat'),
+      appBar: appbarWidget('Chats'),
       drawer: drawerWidget(context),
-      body: const Placeholder(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index){
+            return const TextCard(
+              imagePath: 'assets/user.jpg',
+              senderName: 'Name',
+              text: 'This is a text',
+              time: '0:00',
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class TextCard extends StatelessWidget {
+  const TextCard(
+      {super.key,
+      required this.imagePath,
+      required this.senderName,
+      required this.text,
+      required this.time});
+
+  final String imagePath;
+  final String senderName;
+  final String text;
+  final String time;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: ClipOval(
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.fill,
+        ),
+      ),
+      title: Row(
+        children: [
+          Text(
+            senderName,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.lightBlue,
+            ),
+          ),
+          Expanded(child: Container()),
+          Text(
+            time,
+            style: const TextStyle(color: Colors.grey),
+          ),
+        ],
+      ),
+      subtitle: Text(text),
+      tileColor: Colors.white,
     );
   }
 }
