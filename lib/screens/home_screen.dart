@@ -80,63 +80,49 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appbarWidget('Health Watch'),
       drawer: drawerWidget(context),
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          const SizedBox(
-            height: 15,
-          ),
-          GestureDetector(
-            child: stackWidget(
-              "assets/home.jpeg",
-              'Click here to talk to a licensed pharmacist',
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            GestureDetector(
+              child: stackWidget(
+                "assets/home.jpeg",
+                'Click here to talk to a licensed pharmacist',
+              ),
+              onTap: () {
+                pushRoute(context, appointmentRoute);
+              },
             ),
-            onTap: () {
-              pushRoute(context, appointmentRoute);
-            },
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Divider(
-            height: 10,
-            thickness: 3,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          GestureDetector(
-            child: stackWidget(
-              'assets/calendar.jpg',
-              'Click here to check your appointments',
+            const SizedBox(
+              height: 15,
             ),
-            onTap: () {
-              pushRoute(context, calendarRoute);
-            },
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Divider(
-            height: 10,
-            thickness: 3,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          GestureDetector(
-            child: stackWidget(
-              'assets/chat.jpeg',
-              'Click here to check your chats',
+            GestureDetector(
+              child: stackWidget(
+                'assets/calendar.jpg',
+                'Click here to check your appointments',
+              ),
+              onTap: () {
+                pushRoute(context, calendarRoute);
+              },
             ),
-            onTap: () {
-              pushRoute(context, chatRoute);
-            },
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            GestureDetector(
+              child: stackWidget(
+                'assets/chat.jpeg',
+                'Click here to check your chats',
+              ),
+              onTap: () {
+                pushRoute(context, chatRoute);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }

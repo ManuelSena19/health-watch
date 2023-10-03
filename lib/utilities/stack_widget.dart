@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 
-Widget stackWidget(String assetName, String text){
-  return Stack(
-    children: [
-      Image(
-        image: AssetImage(assetName),
-        width: double.infinity,
-        height: 350,
-        fit: BoxFit.cover,
-      ),
-      Positioned(
-        bottom: 10,
-        left: 10,
-        right: 10,
-        child: Container(
-          width: 600,
-          color: Colors.white,
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
+Widget stackWidget(String assetName, String text) {
+  return Container(
+    height: 350,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+            colors: [Colors.lightBlue, Colors.lightBlueAccent],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight)),
+    child: Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image(
+            image: AssetImage(assetName),
+            width: double.infinity,
+            height: 300,
+            fit: BoxFit.cover,
           ),
         ),
-      ),
-    ],
+        const SizedBox(height: 10),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
   );
 }
