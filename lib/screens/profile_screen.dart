@@ -29,14 +29,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Container();
           } else if (snapshot.hasData) {
             final userData = snapshot.data!;
-            final String? name = userData['username'] as String?;
+            final String name = userData['username'] as String? ?? '';
             return Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      name!,
+                      name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
@@ -81,17 +81,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Container();
         } else if (snapshot.hasData) {
           final userData = snapshot.data!;
-          final String? day = userData['day'] as String?;
-          final String? month = userData['month'] as String?;
-          final String? year = userData['year'] as String?;
-          final String? height = userData['height'] as String?;
-          final String? weight = userData['weight'] as String?;
-          final String? bmi = userData['bmi'] as String?;
-          final String? bloodGroup = userData['bloodGroup'] as String?;
-          final String? allergies = userData['allergies'] as String?;
-          final String? healthConditions =
-              userData['healthConditions'] as String?;
-          final String? gender = userData['gender'] as String?;
+          final String day = userData['day'] as String? ?? 'd';
+          final String month = userData['month'] as String? ?? '';
+          final String year = userData['year'] as String? ?? '';
+          final String height = userData['height'] as String? ?? '';
+          final String weight = userData['weight'] as String? ?? '';
+          final String bmi = userData['bmi'] as String? ?? '';
+          final String bloodGroup = userData['bloodGroup'] as String? ?? '';
+          final String allergies = userData['allergies'] as String? ?? 'none';
+          final String healthConditions =
+              userData['healthConditions'] as String? ?? 'none';
+          final String gender = userData['gender'] as String? ?? '';
 
           return Column(
             children: [
@@ -114,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(width: 10),
                         ProfileCard(
                           label: 'BMI',
-                          value: "$bmi",
+                          value: bmi,
                         ),
                       ],
                     ),
@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontSize: 18,
                             ),
                           ),
-                          subtitle: Text('$gender'),
+                          subtitle: Text(gender),
                           tileColor: Colors.white,
                         ),
                         ListTile(
@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontSize: 18,
                             ),
                           ),
-                          subtitle: Text('$bloodGroup'),
+                          subtitle: Text(bloodGroup),
                           tileColor: Colors.white,
                         ),
                       ],
@@ -185,7 +185,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontSize: 18,
                         ),
                       ),
-                      subtitle: Text('$allergies', softWrap: true,),
+                      subtitle: Text(
+                        allergies,
+                        softWrap: true,
+                      ),
                       tileColor: Colors.white,
                     ),
                     const SizedBox(height: 20),
@@ -202,7 +205,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontSize: 18,
                         ),
                       ),
-                      subtitle: Text('$healthConditions', softWrap: true,),
+                      subtitle: Text(
+                        healthConditions,
+                        softWrap: true,
+                      ),
                       tileColor: Colors.white,
                     ),
                     const SizedBox(height: 20),
@@ -235,7 +241,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return SnackBar(content: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
                   final userData = snapshot.data!;
-                  final String? imagePath = userData['imagePath'] as String?;
+                  final String imagePath = userData['imagePath'] as String? ??
+                      "'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R9w1OwQjbnun15jlbPEDqicrbEsAnBeSQOFpvuEE2A&s'";
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
@@ -253,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Center(
                         child: ProfileWidget(
                           onClicked: () {},
-                          imagePath: imagePath!,
+                          imagePath: imagePath,
                           isEdit: false,
                         ),
                       ),

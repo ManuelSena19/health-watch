@@ -8,6 +8,9 @@ import 'package:health_watch/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/user_data.dart';
+import '../constants/user_preferences.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -528,6 +531,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 healthConditions,
                                 gender,
                                 imagePath);
+                            final userData = await getUserData(email);
+                            await storeUserDataInSharedPrefs(email, userData);
                             pushReplacementRoute(logicRoute);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
