@@ -40,7 +40,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         showUnselectedLabels: false,
         showSelectedLabels: false,
         selectedItemColor: Colors.lightBlue,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
         iconSize: 30,
         elevation: 0,
         items: const [

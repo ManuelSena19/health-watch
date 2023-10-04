@@ -4,11 +4,12 @@ Widget stackWidget(String assetName, String text) {
   return Container(
     height: 350,
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-            colors: [Colors.lightBlue, Colors.lightBlueAccent],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight)),
+      borderRadius: BorderRadius.circular(20),
+      gradient: const LinearGradient(
+          colors: [Colors.lightBlue, Colors.lightBlueAccent],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight),
+    ),
     child: Column(
       children: [
         ClipRRect(

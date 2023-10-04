@@ -11,3 +11,4 @@ const calendarRoute = '/calendar-route/';
 const detailsRoute = 'pharmacist-details/';
 const successRoute = '/successful-booking/';
 const chatRoute = '/chat-screen/';
+const settingsRoute = '/settings-screen/';

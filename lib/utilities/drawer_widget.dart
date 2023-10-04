@@ -127,10 +127,13 @@ Widget drawerWidget(BuildContext context) {
                 height: 10,
                 thickness: 3,
               ),
-              const ListTile(
-                leading: Icon(Icons.settings_outlined),
-                title: Text("Settings"),
+              ListTile(
+                leading: const Icon(Icons.settings_outlined),
+                title: const Text("Settings"),
                 iconColor: Colors.lightBlue,
+                onTap: (){
+                  pushRoute(context, settingsRoute);
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),

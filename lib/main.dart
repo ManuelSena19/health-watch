@@ -12,6 +12,7 @@ import 'package:health_watch/screens/pharmacist_details_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/register_screen.dart';
 import 'package:health_watch/screens/reset_password_screen.dart';
+import 'package:health_watch/screens/settings_screen.dart';
 import 'package:health_watch/screens/successful_booking_screen.dart';
 import 'package:health_watch/screens/verify_email_screen.dart';
 import 'constants/routes.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         detailsRoute: (context) => const PharmacistDetailsScreen(),
         successRoute: (context) => const AppointmentBooked(),
         chatRoute: (context) => const ChatScreen(),
+        settingsRoute: (context) => const SettingsScreen(),
       },
     );
   }
