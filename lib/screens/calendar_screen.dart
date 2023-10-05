@@ -4,8 +4,8 @@ import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/appointment_card.dart';
+import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
-import '../utilities/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {

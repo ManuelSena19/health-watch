@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/push_routes.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
-
 import '../utilities/appbar_widget.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -32,7 +33,9 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          pushRoute(context, appointmentRoute);
+        },
         backgroundColor: Colors.lightBlue,
         elevation: 0,
         child: const Icon(

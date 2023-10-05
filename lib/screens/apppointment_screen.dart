@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/appointment_card.dart';
 import 'package:health_watch/utilities/doctor_card.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
@@ -14,11 +15,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.lightBlue,
-        title: const Text('Appointments'),
-      ),
+      appBar: appbarWidget('Appointments'),
       drawer: drawerWidget(context),
       body: Padding(
         padding: const EdgeInsets.all(10),

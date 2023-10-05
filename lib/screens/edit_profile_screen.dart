@@ -7,7 +7,6 @@ import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/constants/user_data.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/user_preferences.dart';
 
