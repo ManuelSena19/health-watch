@@ -121,6 +121,18 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
+            GestureDetector(
+              child: stackWidget(
+                'assets/pharmacy.jpg',
+                'Click here to find pharmacies near you',
+              ),
+              onTap: () {
+                pushRoute(context, appointmentRoute);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),

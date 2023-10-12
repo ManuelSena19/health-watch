@@ -7,7 +7,8 @@ import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 
 class PharmacistDetailsScreen extends StatefulWidget {
-  const PharmacistDetailsScreen({Key? key, required this.name}) : super(key: key);
+  const PharmacistDetailsScreen({Key? key, required this.name})
+      : super(key: key);
 
   final String name;
 
@@ -27,25 +28,6 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Row(
-            children: [
-              const SizedBox(
-                width: 350,
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    isFav = !isFav;
-                  });
-                },
-                icon: Icon(
-                  isFav ? Icons.favorite : Icons.favorite_outline,
-                  color: Colors.red,
-                  size: 30,
-                ),
-              ),
-            ],
-          ),
           SafeArea(
             child: Column(
               children: [
@@ -58,11 +40,9 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                         width: 10,
                         child: CircularProgressIndicator(),
                       );
-                    }
-                    else if(snapshot.hasError){
+                    } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
-                    }
-                    else{
+                    } else {
                       final pharmacistInfo = snapshot.data!;
                       final String certification =
                           pharmacistInfo['certification'] as String? ?? '';
@@ -73,18 +53,72 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                         width: double.infinity,
                         child: Column(
                           children: [
-                            const CircleAvatar(
-                              radius: 65,
-                              backgroundImage: AssetImage('assets/user.jpg'),
-                              backgroundColor: Colors.white,
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 180,
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [Colors.lightBlue, Colors.white],
+                                    ),
+                                  ),
+                                ),
+                                const Center(
+                                  child: CircleAvatar(
+                                    radius: 65,
+                                    backgroundImage:
+                                        AssetImage('assets/user.jpg'),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(child: Container()),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isFav = !isFav;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        isFav
+                                            ? Icons.favorite
+                                            : Icons.favorite_outline,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.menu),
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                             const SizedBox(
                               height: 30,
                             ),
-                            Text(
-                              "Dr ${widget.name}",
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Dr ${widget.name}",
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Icon(
+                                  Icons.verified,
+                                  color: Colors.lightBlue,
+                                  size: 25,
+                                )
+                              ],
                             ),
                             const SizedBox(
                               height: 5,
@@ -143,8 +177,7 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                         width: 10,
                         child: CircularProgressIndicator(),
                       );
-                    }
-                    else if(snapshot.hasError){
+                    } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
                     final pharmacistInfo = snapshot.data!;
@@ -163,14 +196,14 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                               DocumentSnapshot<Map<String, dynamic>>?>(
                             future: getPharmacistInfo(widget.name),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return const SizedBox(
                                   height: 10,
                                   width: 10,
                                   child: CircularProgressIndicator(),
                                 );
-                              }
-                              else if(snapshot.hasError){
+                              } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               }
                               final pharmacistInfo = snapshot.data!;
