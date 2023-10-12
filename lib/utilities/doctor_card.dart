@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:health_watch/constants/push_routes.dart';
-import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/screens/pharmacist_details_screen.dart';
 
-class DoctorCard extends StatefulWidget {
-  const DoctorCard({Key? key}) : super(key: key);
+class DoctorCard extends StatelessWidget {
+  const DoctorCard(
+      {Key? key,
+      required this.name,
+      required this.pharmacy,
+      required this.rating})
+      : super(key: key);
 
-  @override
-  State<DoctorCard> createState() => _DoctorCardState();
-}
-
-class _DoctorCardState extends State<DoctorCard> {
+  final String name;
+  final String pharmacy;
+  final double rating;
 
   @override
   Widget build(BuildContext context) {
@@ -36,28 +38,39 @@ class _DoctorCardState extends State<DoctorCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Dr. Emmanuel Doke',
-                        style: TextStyle(
+                      Text(
+                        'Dr. $name',
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      const Text(
-                        'Burma Camp Pharmacy',
-                        style: TextStyle(
-                            fontSize: 15),
+                      Text(
+                        pharmacy,
+                        style: const TextStyle(fontSize: 15),
                       ),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Icon(Icons.star, color: Colors.yellow, size: 30,),
-                          Spacer(flex: 1,),
-                          Text('4.5'),
-                          SizedBox(width: 10,),
-                          Text('Reviews'),
-                          Spacer(flex: 1,),
-                          Text('(20)'),
-                          Spacer(flex: 7,),
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 30,
+                          ),
+                          const Spacer(
+                            flex: 1,
+                          ),
+                          Text('$rating'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Text('Reviews'),
+                          const Spacer(
+                            flex: 1,
+                          ),
+                          const Text('(20)'),
+                          const Spacer(
+                            flex: 7,
+                          ),
                         ],
                       ),
                     ],
@@ -67,8 +80,10 @@ class _DoctorCardState extends State<DoctorCard> {
             ],
           ),
         ),
-        onTap: (){
-          pushRoute(context, detailsRoute);
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return PharmacistDetailsScreen(name: name);
+          }));
         },
       ),
     );

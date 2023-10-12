@@ -92,35 +92,11 @@ Widget drawerWidget(BuildContext context) {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.person_outlined),
-                title: const Text("Profile"),
-                iconColor: Colors.lightBlue,
-                onTap: () {
-                  pushRoute(context, profileRoute);
-                },
-              ),
-              ListTile(
-                leading: const Icon(CupertinoIcons.chat_bubble_text),
-                title: const Text("Chats"),
-                iconColor: Colors.lightBlue,
-                onTap: () {
-                  pushRoute(context, chatRoute);
-                },
-              ),
-              ListTile(
                 leading: const Icon(Icons.calendar_month_outlined),
                 title: const Text("Calendar"),
                 iconColor: Colors.lightBlue,
                 onTap: () {
                   pushRoute(context, calendarRoute);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.today_outlined),
-                title: const Text("Appointments"),
-                iconColor: Colors.lightBlue,
-                onTap: () {
-                  pushRoute(context, appointmentRoute);
                 },
               ),
               const Divider(

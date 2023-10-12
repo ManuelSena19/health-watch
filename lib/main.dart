@@ -8,7 +8,6 @@ import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
 import 'package:health_watch/screens/home_screen.dart';
 import 'package:health_watch/screens/login_screen.dart';
-import 'package:health_watch/screens/pharmacist_details_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/register_screen.dart';
 import 'package:health_watch/screens/reset_password_screen.dart';
@@ -51,7 +50,6 @@ class MyApp extends StatelessWidget {
         editProfileRoute: (context) => const EditProfileScreen(),
         appointmentRoute: (context) => const AppointmentScreen(),
         calendarRoute: (context) => const CalendarScreen(),
-        detailsRoute: (context) => const PharmacistDetailsScreen(),
         successRoute: (context) => const AppointmentBooked(),
         chatRoute: (context) => const ChatScreen(),
         settingsRoute: (context) => const SettingsScreen(),
