@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:health_watch/constants/logic.dart';
 import 'package:health_watch/screens/apppointment_screen.dart';
+import 'package:health_watch/screens/booking_screen.dart';
 import 'package:health_watch/screens/calendar_screen.dart';
 import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
@@ -11,6 +12,7 @@ import 'package:health_watch/screens/login_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/register_screen.dart';
 import 'package:health_watch/screens/reset_password_screen.dart';
+import 'package:health_watch/screens/search_screen.dart';
 import 'package:health_watch/screens/settings_screen.dart';
 import 'package:health_watch/screens/successful_booking_screen.dart';
 import 'package:health_watch/screens/verify_email_screen.dart';
@@ -49,10 +51,12 @@ class MyApp extends StatelessWidget {
         profileRoute: (context) => const ProfileScreen(),
         editProfileRoute: (context) => const EditProfileScreen(),
         appointmentRoute: (context) => const AppointmentScreen(),
-        calendarRoute: (context) => const CalendarScreen(),
         successRoute: (context) => const AppointmentBooked(),
         chatRoute: (context) => const ChatScreen(),
         settingsRoute: (context) => const SettingsScreen(),
+        calendarRoute: (context) => const CalendarScreen(),
+        bookingRoute: (context) => const BookingScreen(),
+        searchRoute: (context) => const SearchScreen(),
       },
     );
   }

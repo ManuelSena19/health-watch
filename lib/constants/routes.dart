@@ -12,3 +12,5 @@ const detailsRoute = 'pharmacist-details/';
 const successRoute = '/successful-booking/';
 const chatRoute = '/chat-screen/';
 const settingsRoute = '/settings-screen/';
+const bookingRoute = '/booking-screen/';
+const searchRoute = '/search-screen/';

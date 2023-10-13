@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
-import 'package:health_watch/screens/apppointment_screen.dart';
 import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
+import 'package:health_watch/screens/search_screen.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/stack_widget.dart';
 
 final List<Widget> _screens = [
   const HomeScreen(),
-  const AppointmentScreen(),
+  const SearchScreen(),
   const ChatScreen(),
   const ProfileScreen(),
 ];
@@ -49,8 +49,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.today_outlined),
-            label: 'Appointments',
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.chat_bubble_text),
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Click here to talk to a licensed pharmacist',
               ),
               onTap: () {
-                pushRoute(context, appointmentRoute);
+                pushRoute(context, searchRoute);
               },
             ),
             const SizedBox(
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Click here to check your appointments',
               ),
               onTap: () {
-                pushRoute(context, calendarRoute);
+                pushRoute(context, appointmentRoute);
               },
             ),
             const SizedBox(
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Click here to find pharmacies near you',
               ),
               onTap: () {
-                pushRoute(context, appointmentRoute);
+                pushRoute(context, searchRoute);
               },
             ),
             const SizedBox(

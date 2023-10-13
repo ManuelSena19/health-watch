@@ -256,7 +256,7 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                   padding: const EdgeInsets.all(20),
                   child: ElevatedButton(
                     onPressed: () {
-                      pushRoute(context, calendarRoute);
+                      pushRoute(context, bookingRoute);
                     },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
