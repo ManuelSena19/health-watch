@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/constants/user_data.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
+import 'package:health_watch/utilities/show_error_dialog.dart';
 
 class PharmacistDetailsScreen extends StatefulWidget {
   const PharmacistDetailsScreen({Key? key, required this.name})
@@ -18,9 +20,56 @@ class PharmacistDetailsScreen extends StatefulWidget {
 
 class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
   bool isFav = false;
+  String _pharmacistName = '';
+  String _pharmacy = '';
 
   @override
   Widget build(BuildContext context) {
+    Future<DateTime?> pickDate() {
+      return showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.utc(2025),
+      );
+    }
+
+    Future<TimeOfDay?> pickTime() {
+      return showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(
+          hour: TimeOfDay.now().hour,
+          minute: TimeOfDay.now().minute,
+        ),
+      );
+    }
+
+    void showError(String error) {
+      showErrorDialog(context, error);
+    }
+
+    void push(String route){
+      pushRoute(context, route);
+    }
+
+    Future<void> bookAppointment(DateTime? date, String patient,
+        String pharmacist, String pharmacy, String status, String time) async {
+      final CollectionReference appointments =
+          FirebaseFirestore.instance.collection('appointments');
+      try {
+        await appointments.doc().set({
+          'date': date,
+          'patient': patient,
+          'pharmacist': pharmacist,
+          'pharmacy': pharmacy,
+          'status': status,
+          'time': time
+        });
+      } catch (error) {
+        showError('$error');
+      }
+    }
+
     return Scaffold(
       appBar: appbarWidget("Pharmacist Details"),
       body: ListView(
@@ -46,6 +95,8 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                           pharmacistInfo['certification'] as String? ?? '';
                       final String pharmacy =
                           pharmacistInfo['pharmacy'] as String? ?? '';
+                        _pharmacistName = widget.name;
+                        _pharmacy = pharmacy;
                       final int id = pharmacistInfo['id'] as int? ?? 0;
                       return SizedBox(
                         width: double.infinity,
@@ -253,8 +304,28 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: ElevatedButton(
-                    onPressed: () {
-                      pushRoute(context, bookingRoute);
+                    onPressed: () async {
+                      final date = await pickDate();
+                      if (date == null) {
+                        showError('Please enter a date');
+                      }
+                      else{
+                        final time = await pickTime();
+                        if (time == null) {
+                          showError('Please enter a time');
+                        }
+                        else{
+                          String selectedTime = '${time.hour}:${time.minute}';
+                          String patient =
+                          FirebaseAuth.instance.currentUser!.email.toString();
+                          String pharmacist = _pharmacistName;
+                          String pharmacy = _pharmacy;
+                          String status = 'upcoming';
+                          await bookAppointment(date, patient, pharmacist, pharmacy,
+                              status, selectedTime);
+                          push(successRoute);
+                        }
+                      }
                     },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),

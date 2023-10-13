@@ -24,12 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ? 'Enter a valid email'
           : null;
 
-  void pushRoute(String route){
+  void pushRoute(String route) {
     Navigator.pushNamed(context, route);
   }
 
-  void pushReplacementRoute(String route){
+  void pushReplacementRoute(String route) {
     Navigator.pushReplacementNamed(context, route);
+  }
+
+  void showError(String text) {
+    showErrorDialog(context, text);
   }
 
   @override
@@ -112,10 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               height: 60,
               padding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 100),
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 100),
               child: ElevatedButton(
-                onPressed: () async{
-                  try{
+                onPressed: () async {
+                  try {
                     String email = emailController.text;
                     String password = passwordController.text;
                     final form = formKey.currentState!;
@@ -127,14 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     pushReplacementRoute(logicRoute);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
-                      await showErrorDialog(context, 'User not found');
+                      showError('User not found');
                     } else if (e.code == 'wrong-password') {
-                      await showErrorDialog(context, 'Wrong password');
+                      showError('Wrong password');
                     } else {
-                      await showErrorDialog(context, 'Error: $e.code');
+                      showError('Error: $e');
                     }
                   } catch (e) {
-                    await showErrorDialog(context, e.toString());
+                    showError('Error: $e');
                   }
                 },
                 child: Container(

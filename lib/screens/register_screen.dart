@@ -7,7 +7,6 @@ import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:health_watch/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
-
 import '../constants/user_data.dart';
 import '../constants/user_preferences.dart';
 
@@ -70,6 +69,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void pushReplacementRoute(String route) {
     Navigator.pushReplacementNamed(context, route);
+  }
+
+  void showError(String error) {
+    showErrorDialog(context, error);
   }
 
   Future<void> addUser(
@@ -536,21 +539,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             pushReplacementRoute(logicRoute);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
-                              await showErrorDialog(context,
+                              showError(
                                   "Weak password : Password should be above 6 characters");
                             } else if (e.code == 'invalid-password') {
-                              await showErrorDialog(
-                                  context, 'Invalid-password');
+                              showError('Invalid-password');
                             } else if (e.code == 'email-already-in-use') {
-                              await showErrorDialog(context,
+                              showError(
                                   'Email belongs to other user: Register with a different email');
                             } else {
-                              await showErrorDialog(context, 'Error: $e.code');
+                              showError('Error: $e');
                             }
                           } on TypeError catch (e) {
-                            await showErrorDialog(context, e.toString());
+                            showError('Error: $e');
                           } catch (e) {
-                            await showErrorDialog(context, e.toString());
+                            showError('Error: $e');
                           }
                         },
                         child: Container(
