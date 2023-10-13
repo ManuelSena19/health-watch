@@ -4,7 +4,6 @@ import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/constants/user_data.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
-import 'package:health_watch/utilities/drawer_widget.dart';
 
 class PharmacistDetailsScreen extends StatefulWidget {
   const PharmacistDetailsScreen({Key? key, required this.name})
@@ -24,7 +23,6 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarWidget("Pharmacist Details"),
-      drawer: drawerWidget(context),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [

@@ -23,3 +23,24 @@ Future<DocumentSnapshot<Map<String, dynamic>>?> getPharmacistInfo(
     return null;
   }
 }
+
+Future<List<String>> getPharmacistNames() async {
+  List<String> pharmacistNames = [];
+  try {
+    CollectionReference pharmacistsCollection =
+        FirebaseFirestore.instance.collection('pharmacists');
+
+    QuerySnapshot pharmacistSnapshot = await pharmacistsCollection.get();
+
+    for (QueryDocumentSnapshot document in pharmacistSnapshot.docs) {
+      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+      String name =
+          data['name'];
+      pharmacistNames.add(name);
+    }
+  } catch (e) {
+    rethrow;
+  }
+
+  return pharmacistNames;
+}
