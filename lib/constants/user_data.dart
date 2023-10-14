@@ -44,3 +44,12 @@ Future<List<String>> getPharmacistNames() async {
 
   return pharmacistNames;
 }
+
+Future<List<DocumentSnapshot>> getAppointments(String name) async {
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection('appointments')
+      .where('patient', isEqualTo: name)
+      .get();
+  print('Number of documents retrieved: ${querySnapshot.size}');
+  return querySnapshot.docs;
+}

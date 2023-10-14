@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentCard extends StatefulWidget {
@@ -54,7 +55,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const ScheduleCard(),
+                  ScheduleCard(date: Timestamp.now(), time: '2:0',),
                   const SizedBox(
                     height: 10,
                   ),
@@ -100,7 +101,11 @@ class _AppointmentCardState extends State<AppointmentCard> {
 }
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({Key? key}) : super(key: key);
+  const ScheduleCard({Key? key, required this.date, required this.time})
+      : super(key: key);
+
+  final Timestamp date;
+  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -113,34 +118,32 @@ class ScheduleCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Icon(
+        children: [
+          const Icon(
             Icons.calendar_today_outlined,
             color: Colors.white,
             size: 20,
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(
-            'Monday, 11/28/2022',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            '${date.toDate().day}/${date.toDate().month}/${date.toDate().year}',
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
-          SizedBox(
-            width: 20,
-          ),
-          Icon(
+          Expanded(child: Container()),
+          const Icon(
             Icons.access_alarm_outlined,
             color: Colors.white,
             size: 20,
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Flexible(
               child: Text(
-            '2:00 PM',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            '${time}0',
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ))
         ],
       ),
