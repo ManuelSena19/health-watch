@@ -15,12 +15,16 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   bool isEmailVerified = false;
   Timer? timer;
 
+  void showError(String text){
+    showErrorDialog(context, text);
+  }
+
   Future sendVerificationEmail() async {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
     } catch (e) {
-      showErrorDialog(context, e.toString());
+      showError('$e');
     }
   }
 

@@ -19,12 +19,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ? 'Enter a valid email'
           : null;
 
+  void showError(String text){
+    showErrorDialog(context, text);
+  }
+
   Future resetPassword() async {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailController.text);
     } on FirebaseAuthException catch (e) {
-      showErrorDialog(context, e.toString());
+      showError('$e');
     }
   }
 

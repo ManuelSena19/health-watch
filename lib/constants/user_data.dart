@@ -50,6 +50,5 @@ Future<List<DocumentSnapshot>> getAppointments(String name) async {
       .collection('appointments')
       .where('patient', isEqualTo: name)
       .get();
-  print('Number of documents retrieved: ${querySnapshot.size}');
   return querySnapshot.docs;
 }
