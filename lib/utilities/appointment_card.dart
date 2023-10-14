@@ -1,14 +1,55 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/utilities/show_error_dialog.dart';
 
 class AppointmentCard extends StatefulWidget {
-  const AppointmentCard({Key? key}) : super(key: key);
+  const AppointmentCard(
+      {Key? key,
+      required this.date,
+      required this.patient,
+      required this.pharmacist,
+      required this.pharmacy,
+      required this.time})
+      : super(key: key);
+
+  final Timestamp date;
+  final String patient;
+  final String pharmacist;
+  final String pharmacy;
+  final String time;
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
+  Future<void> updateStatus(String newStatus) async {
+    try{
+      final appointmentRef =
+      FirebaseFirestore.instance.collection('appointments');
+
+      QuerySnapshot querySnapshot = await appointmentRef
+          .where('patient', isEqualTo: widget.patient)
+          .where('pharmacy', isEqualTo: widget.pharmacy)
+          .where('pharmacist', isEqualTo: widget.pharmacist)
+          .where('date', isEqualTo: widget.date)
+          .where('time', isEqualTo: widget.time)
+          .get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        final appointmentDoc = querySnapshot.docs.first;
+        await appointmentDoc.reference.update({'status': newStatus});
+      }
+    }
+    catch (error){
+      showError('$error');
+    }
+  }
+
+  void showError(String text){
+    showErrorDialog(context, text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,17 +77,18 @@ class _AppointmentCardState extends State<AppointmentCard> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            'Dr. Emmanuel Doke',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            widget.pharmacist,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 18),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(
-                            'Burma Camp Pharmacy',
-                            style: TextStyle(color: Colors.black),
+                            widget.pharmacy,
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -55,7 +97,10 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   const SizedBox(
                     height: 10,
                   ),
-                  ScheduleCard(date: Timestamp.now(), time: '2:0',),
+                  ScheduleCard(
+                    date: widget.date,
+                    time: widget.time,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -70,7 +115,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
                             'Cancel',
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            updateStatus('canceled');
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -85,7 +132,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
                             'Completed',
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            updateStatus('completed');
+                          },
                         ),
                       ),
                     ],

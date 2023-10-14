@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../utilities/appbar_widget.dart';
 import '../utilities/appointment_card.dart';
@@ -13,8 +14,13 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  DateTime now = DateTime.now();
+  String patient = FirebaseAuth.instance.currentUser!.email.toString();
   @override
   Widget build(BuildContext context) {
+    Timestamp today =
+        Timestamp.fromDate(DateTime.utc(now.year, now.month, now.day));
+    print(today);
     return Scaffold(
       appBar: appbarWidget('Search'),
       drawer: drawerWidget(context),
@@ -63,7 +69,60 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(
               height: 20,
             ),
-            const AppointmentCard(),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('appointments')
+                  .where('patient', isEqualTo: patient)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                final appointments = snapshot.data!.docs;
+                if (snapshot.hasError) {
+                  print('error');
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  print('waiting');
+                  return const Center(
+                    child: SizedBox(
+                      height: 10,
+                      width: 10,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (appointments.isNotEmpty) {
+                  print('has data');
+                  return Column(
+                    children: List.generate(appointments.length, (index) {
+                      final appointment = appointments[index];
+                      Timestamp firestoreTimestamp = appointment['date'];
+                      if (firestoreTimestamp.toDate().isAtSameMomentAs(
+                          DateTime(now.year, now.month, now.day, 0, 0, 0))) {
+                        return AppointmentCard(
+                          date: appointment['date'] ?? today,
+                          patient: patient,
+                          pharmacist: appointment['pharmacist'] ?? '',
+                          pharmacy: appointment['pharmacy'] ?? '',
+                          time: appointment['time'] ?? '',
+                        );
+                      }
+                      else {
+                        print('no appointments');
+                        return const SizedBox();
+                      }
+                    }),
+                  );
+                } else {
+                  print('no appointments');
+                  return const Center(
+                    child: Text(
+                      "You don't have any appointments today",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  );
+                }
+              },
+            ),
             const SizedBox(
               height: 40,
             ),
@@ -76,7 +135,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 Expanded(child: Container()),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return const SeeMore();
                     }));
                   },
@@ -142,15 +202,19 @@ class SeeMore extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: const Icon(Icons.local_pharmacy_outlined, color: Colors.lightBlue, size: 30,),
+        title: const Icon(
+          Icons.local_pharmacy_outlined,
+          color: Colors.lightBlue,
+          size: 30,
+        ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('pharmacists').snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection('pharmacists').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          } else if (snapshot.connectionState ==
-              ConnectionState.waiting) {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: SizedBox(
                 height: 10,
@@ -176,4 +240,3 @@ class SeeMore extends StatelessWidget {
     );
   }
 }
-
