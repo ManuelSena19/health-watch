@@ -23,10 +23,13 @@ class AppointmentCard extends StatefulWidget {
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
+  bool isUpcoming = true;
+  bool isCompleted = false;
+  bool isCanceled = false;
   Future<void> updateStatus(String newStatus) async {
-    try{
+    try {
       final appointmentRef =
-      FirebaseFirestore.instance.collection('appointments');
+          FirebaseFirestore.instance.collection('appointments');
 
       QuerySnapshot querySnapshot = await appointmentRef
           .where('patient', isEqualTo: widget.patient)
@@ -36,17 +39,16 @@ class _AppointmentCardState extends State<AppointmentCard> {
           .where('time', isEqualTo: widget.time)
           .get();
 
-      if(querySnapshot.docs.isNotEmpty){
+      if (querySnapshot.docs.isNotEmpty) {
         final appointmentDoc = querySnapshot.docs.first;
         await appointmentDoc.reference.update({'status': newStatus});
       }
-    }
-    catch (error){
+    } catch (error) {
       showError('$error');
     }
   }
 
-  void showError(String text){
+  void showError(String text) {
     showErrorDialog(context, text);
   }
 
@@ -108,34 +110,121 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red, elevation: 0),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            updateStatus('canceled');
-                          },
-                        ),
+                        child: isCanceled
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red, elevation: 0),
+                                child: const Text(
+                                  'Canceled',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'The appointment has already been canceled',
+                                      ),
+                                      action: SnackBarAction(
+                                        label: 'Undo',
+                                        onPressed: () {
+                                          updateStatus('upcoming');
+                                          setState(
+                                            () {
+                                              isUpcoming = true;
+                                              isCanceled = false;
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red, elevation: 0),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  updateStatus('canceled');
+                                  setState(() {
+                                    isCanceled = true;
+                                    isUpcoming = false;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'The appointment has been canceled',
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                       const SizedBox(
                         width: 20,
                       ),
                       Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.greenAccent,
-                              elevation: 0),
-                          child: const Text(
-                            'Completed',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            updateStatus('completed');
-                          },
-                        ),
+                        child: isCompleted
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.greenAccent,
+                                  elevation: 0,
+                                ),
+                                child: const Text(
+                                  'Completed',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'The appointment has already been completed',
+                                      ),
+                                      action: SnackBarAction(
+                                        label: 'Undo',
+                                        onPressed: () {
+                                          updateStatus('upcoming');
+                                          setState(
+                                            () {
+                                              isUpcoming = true;
+                                              isCompleted = false;
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.greenAccent,
+                                  elevation: 0,
+                                ),
+                                child: const Text(
+                                  'Complete',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  updateStatus('completed');
+                                  setState(
+                                    () {
+                                      isCompleted = true;
+                                      isUpcoming = false;
+                                    },
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'The appointment has been completed',
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   ),
