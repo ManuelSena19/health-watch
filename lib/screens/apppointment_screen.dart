@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/push_routes.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/appointment_card.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
@@ -278,7 +280,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        pushRoute(context, searchRoute);
+                      },
                       style: ElevatedButton.styleFrom(elevation: 0),
                       child: const Text('Find Pharmacists'),
                     ),
