@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'day': day,
       'month': month,
       'year': year,
-      'height': weight,
+      'height': height,
       'weight': weight,
       'bmi': bmi,
       'bloodGroup': bloodGroup,
