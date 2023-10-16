@@ -65,6 +65,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
+  Map<String, dynamic>? userData;
+  Future<void> updateUserData() async {
+    final data = await getUserDataFromSharedPrefs(_email);
+    setState(() {
+      userData = data;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -253,6 +261,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         final userData = await getUserData(_email);
                         await deleteUserDataFromSharedPrefs(_email);
                         await storeUserDataInSharedPrefs(_email, userData);
+                        await updateUserData();
                         pushReplacementRoute(profileRoute);
                       } catch (e) {
                         FirebaseFirestore.instance
@@ -267,6 +276,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           'allergies': allergiesController.text,
                           'healthConditions': healthConditionsController.text,
                         });
+                        await deleteUserDataFromSharedPrefs(_email);
+                        await storeUserDataInSharedPrefs(_email, userData);
+                        await updateUserData();
                         pushReplacementRoute(profileRoute);
                       }
                     },

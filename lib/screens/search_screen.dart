@@ -74,26 +74,25 @@ class _SearchScreenState extends State<SearchScreen> {
                   .where('patient', isEqualTo: patient)
                   .snapshots(),
               builder: (context, snapshot) {
-                try {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
                   final appointments = snapshot.data!.docs;
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(
-                      child: SizedBox(
-                        height: 10,
-                        width: 10,
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (appointments.isNotEmpty) {
-                    return Column(
-                      children: List.generate(appointments.length, (index) {
-                        final appointment = appointments[index];
-                        Timestamp firestoreTimestamp = appointment['date'];
-                        if (firestoreTimestamp.toDate().isAtSameMomentAs(
-                            DateTime(now.year, now.month, now.day, 0, 0, 0))) {
+                  if (appointments.isNotEmpty) {
+                    final todayAppointments = appointments.where((appointment) {
+                      Timestamp firestoreTimestamp = appointment['date'];
+                      return firestoreTimestamp.toDate().isAtSameMomentAs(
+                            DateTime(now.year, now.month, now.day, 0, 0, 0),
+                          );
+                    }).toList();
+                    if (todayAppointments.isNotEmpty) {
+                      return Column(
+                        children: todayAppointments.map((appointment) {
                           return AppointmentCard(
                             date: appointment['date'] ?? today,
                             patient: patient,
@@ -101,28 +100,29 @@ class _SearchScreenState extends State<SearchScreen> {
                             pharmacy: appointment['pharmacy'] ?? '',
                             time: appointment['time'] ?? '',
                           );
-                        } else {
-                          return const SizedBox();
-                        }
-                      }),
-                    );
+                        }).toList(),
+                      );
+                    } else {
+                      return const Center(
+                        child: Text(
+                          "You don't have any appointments today",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    }
                   } else {
-                    return const Center(
-                      child: Text(
-                        "You don't have any appointments today",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    );
+                    return const SizedBox(height: 1);
                   }
-                } catch (e) {
-                  debugPrint('$e');
+                } else {
+                  return const SizedBox(height: 1);
                 }
-                return const SizedBox();
               },
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Row(
               children: [
@@ -145,9 +145,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
             SizedBox(
               height: 1000,
               child: StreamBuilder(
@@ -168,7 +165,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     );
                   } else {
-                    try{
+                    try {
                       final pharmacists = snapshot.data!.docs;
                       return Column(
                         children: List.generate(5, (index) {
@@ -180,8 +177,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           );
                         }),
                       );
-                    }
-                    catch(e){
+                    } catch (e) {
                       return const SizedBox();
                     }
                   }

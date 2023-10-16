@@ -19,8 +19,7 @@ Future<Map<String, dynamic>> getUserDataFromSharedPrefs(String email) async {
   return {};
 }
 
-Future<void> deleteUserDataFromSharedPrefs(String email) async{
+Future<void> deleteUserDataFromSharedPrefs(String email) async {
   final sharedPrefs = await SharedPreferences.getInstance();
-  List<String> existingList = sharedPrefs.getStringList(email) ?? [];
-  existingList.removeWhere((key) => key == email);
+  sharedPrefs.remove(email);
 }
