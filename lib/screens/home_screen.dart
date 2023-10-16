@@ -18,8 +18,10 @@ final List<Widget> _screens = [
   const ProfileScreen(),
 ];
 
-class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+class MainNavigationScreen extends StatefulWidget{
+  MainNavigationScreen({Key? key, this.index}) : super(key: key);
+
+  int? index;
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -31,11 +33,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: _screens[widget.index ?? _currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: widget.index ?? _currentIndex,
         onTap: (index){
           setState(() {
+            widget.index = null;
             _currentIndex = index;
           });
         },

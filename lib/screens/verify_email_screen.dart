@@ -59,7 +59,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const MainNavigationScreen()
+      ? MainNavigationScreen()
       : Scaffold(
           appBar: AppBar(
             title: const Text('Verify Email'),
