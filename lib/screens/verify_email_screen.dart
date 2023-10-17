@@ -15,7 +15,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   bool isEmailVerified = false;
   Timer? timer;
 
-  void showError(String text){
+  void showError(String text) {
     showErrorDialog(context, text);
   }
 
@@ -60,26 +60,20 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   @override
   Widget build(BuildContext context) => isEmailVerified
       ? MainNavigationScreen()
-      : Scaffold(
-          appBar: AppBar(
-            title: const Text('Verify Email'),
+      : AlertDialog(
+          title: const Text('Verify Email'),
+          content: const Text(
+            'Check your email to verify your account. Check your inbox or your spam folder.',
+            style: TextStyle(fontSize: 20),
           ),
-          body: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Text(
-                  'Check your email to verify your account. Check your inbox or your spam folder.',
-                  style: TextStyle(fontSize: 20),
-                ),
+          actions: [
+            TextButton(
+              onPressed: sendVerificationEmail,
+              child: const Text(
+                'Resend Mail',
+                style: TextStyle(fontSize: 20),
               ),
-              TextButton(
-                  onPressed: sendVerificationEmail,
-                  child: const Text(
-                    'Resend Mail',
-                    style: TextStyle(fontSize: 20),
-                  ))
-            ],
-          ),
+            ),
+          ],
         );
 }
