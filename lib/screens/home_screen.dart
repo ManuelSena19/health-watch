@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/screens/apppointment_screen.dart';
-import 'package:health_watch/screens/chat_screen.dart';
+// import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/search_screen.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
@@ -14,7 +14,7 @@ final List<Widget> _screens = [
   const HomeScreen(),
   const SearchScreen(),
   const AppointmentScreen(),
-  const ChatScreen(),
+  // const ChatScreen(),
   const ProfileScreen(),
 ];
 
@@ -61,10 +61,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             icon: Icon(Icons.calendar_today_outlined),
             label: 'Appointments',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.chat_bubble_text),
-            label: 'Chats',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(CupertinoIcons.chat_bubble_text),
+          //   label: 'Chats',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.person),
             label: 'Profile',

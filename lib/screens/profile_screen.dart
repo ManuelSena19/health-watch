@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/routes.dart';
-import 'package:health_watch/constants/user_preferences.dart';
+import 'package:health_watch/models/user_model.dart';
+import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/profile_widget.dart';
+import 'package:health_watch/utilities/show_error_dialog.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -16,34 +19,18 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final String _email = FirebaseAuth.instance.currentUser?.email ?? '';
-  Map<String, dynamic>? userData;
 
   @override
   void initState() {
     super.initState();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    final data = await getUserDataFromSharedPrefs(_email);
-    setState(() {
-      userData = data;
-    });
-  }
-
-  Future<void> updateUserData() async {
-    final data = await getUserDataFromSharedPrefs(_email);
-    setState(() {
-      userData = data;
-    });
   }
 
   void pushRoute(String route) {
     Navigator.pushNamed(context, route);
   }
 
-  Widget buildName() {
-    final String name = userData?['username'] as String? ?? '';
+  Widget buildName(UserModel user) {
+    final String name = user.username;
     return Column(
       children: [
         Row(
@@ -66,7 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             IconButton(
               onPressed: () {
                 pushRoute(editProfileRoute);
-                updateUserData();
               },
               icon: const Icon(
                 Icons.edit_outlined,
@@ -82,18 +68,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildBio() {
-    final String day = userData?['day'] as String? ?? 'd';
-    final String month = userData?['month'] as String? ?? '';
-    final String year = userData?['year'] as String? ?? '';
-    final String height = userData?['height'] as String? ?? '';
-    final String weight = userData?['weight'] as String? ?? '';
-    final String bmi = userData?['bmi'] as String? ?? '';
-    final String bloodGroup = userData?['bloodGroup'] as String? ?? '';
-    final String allergies = userData?['allergies'] as String? ?? 'none';
-    final String healthConditions =
-        userData?['healthConditions'] as String? ?? 'none';
-    final String gender = userData?['gender'] as String? ?? '';
+  Widget buildBio(UserModel user) {
+    final String day = user.day;
+    final String month = user.month;
+    final String year = user.year;
+    final String height = user.height;
+    final String weight = user.weight;
+    final String bmi = user.bmi;
+    final String bloodGroup = user.bloodGroup;
+    final String allergies = user.allergies;
+    final String healthConditions = user.healthConditions;
+    final String gender = user.gender;
     return Column(
       children: [
         Container(
@@ -222,47 +207,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = userData?['imagePath'] as String? ??
-        "'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R9w1OwQjbnun15jlbPEDqicrbEsAnBeSQOFpvuEE2A&s'";
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
-      appBar: appbarWidget('Profile'),
-      drawer: drawerWidget(context),
-      body: ListView(
-        children: <Widget>[
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.lightBlue, Colors.white],
-                  ),
+        appBar: appbarWidget('Profile'),
+        drawer: drawerWidget(context),
+        body: FutureBuilder(
+          future: userProvider.getUserData(_email),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox();
+            } else if (snapshot.hasError) {
+              showErrorDialog(context, '${snapshot.error}');
+            }
+            UserModel user = userProvider.user;
+            final String imagePath = user.imagePath;
+            return ListView(
+              children: <Widget>[
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 180,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.lightBlue, Colors.white],
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: ProfileWidget(
+                        onClicked: () {},
+                        imagePath: imagePath,
+                        isEdit: false,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Center(
-                child: ProfileWidget(
-                  onClicked: () {},
-                  imagePath: imagePath,
-                  isEdit: false,
+                const SizedBox(
+                  height: 5,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          buildName(),
-          const SizedBox(
-            height: 10,
-          ),
-          buildBio(),
-        ],
-      ),
-    );
+                buildName(user),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildBio(user),
+              ],
+            );
+          },
+        ));
   }
 }
 

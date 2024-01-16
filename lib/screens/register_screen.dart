@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_watch/constants/routes.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:health_watch/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
-import '../constants/user_data.dart';
-import '../constants/user_preferences.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -18,7 +19,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _firestore = FirebaseFirestore.instance;
   late final TextEditingController usernameController = TextEditingController();
   late final TextEditingController passwordController = TextEditingController();
   late final TextEditingController emailController = TextEditingController();
@@ -75,38 +75,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     showErrorDialog(context, error);
   }
 
-  Future<void> addUser(
-      String email,
-      String username,
-      String day,
-      String month,
-      String year,
-      String height,
-      String weight,
-      String bmi,
-      String bloodGroup,
-      String allergies,
-      String healthConditions,
-      String gender,
-      String imagePath) async {
-    final CollectionReference users = _firestore.collection('users');
-    await users.doc(email).set({
-      'username': username,
-      'email': email,
-      'day': day,
-      'month': month,
-      'year': year,
-      'height': height,
-      'weight': weight,
-      'bmi': bmi,
-      'bloodGroup': bloodGroup,
-      'allergies': allergies,
-      'healthConditions': healthConditions,
-      'gender': gender,
-      'imagePath': imagePath
-    });
-  }
-
   @override
   void dispose() {
     emailController.dispose();
@@ -123,6 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -457,8 +426,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: allergyController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
                           labelText: 'Enter your allergies here',
                           prefixIcon: Icon(Icons.coronavirus),
                         ),
@@ -477,8 +448,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: conditionController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
                           labelText:
                               'Enter your medical conditions here if you have any',
                           prefixIcon: Icon(Icons.local_hospital),
@@ -520,22 +493,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
                                     email: email, password: password);
-                            addUser(
-                                email,
-                                username,
-                                day,
-                                month,
-                                year,
-                                height,
-                                weight,
-                                bmi,
-                                bloodGroup,
-                                allergies,
-                                healthConditions,
-                                gender,
-                                imagePath);
-                            final userData = await getUserData(email);
-                            await storeUserDataInSharedPrefs(email, userData);
+                            UserModel newUser = UserModel(
+                              allergies: allergies,
+                              bloodGroup: bloodGroup,
+                              bmi: bmi,
+                              day: day,
+                              email: email,
+                              gender: gender,
+                              healthConditions: healthConditions,
+                              height: height,
+                              imagePath: imagePath,
+                              month: month,
+                              username: username,
+                              weight: weight,
+                              year: year,
+                            );
+                            userProvider.addUser(newUser);
                             pushReplacementRoute(logicRoute);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {

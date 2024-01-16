@@ -1,22 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/models/appointment_model.dart';
+import 'package:health_watch/providers/appointment_provider.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
+import 'package:provider/provider.dart';
 
 class AppointmentCard extends StatefulWidget {
-  const AppointmentCard(
-      {Key? key,
-      required this.date,
-      required this.patient,
-      required this.pharmacist,
-      required this.pharmacy,
-      required this.time})
+  const AppointmentCard({Key? key, required this.appointment})
       : super(key: key);
 
-  final Timestamp date;
-  final String patient;
-  final String pharmacist;
-  final String pharmacy;
-  final String time;
+  final AppointmentModel appointment;
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
@@ -26,27 +18,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
   bool isUpcoming = true;
   bool isCompleted = false;
   bool isCanceled = false;
-  Future<void> updateStatus(String newStatus) async {
-    try {
-      final appointmentRef =
-          FirebaseFirestore.instance.collection('appointments');
-
-      QuerySnapshot querySnapshot = await appointmentRef
-          .where('patient', isEqualTo: widget.patient)
-          .where('pharmacy', isEqualTo: widget.pharmacy)
-          .where('pharmacist', isEqualTo: widget.pharmacist)
-          .where('date', isEqualTo: widget.date)
-          .where('time', isEqualTo: widget.time)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        final appointmentDoc = querySnapshot.docs.first;
-        await appointmentDoc.reference.update({'status': newStatus});
-      }
-    } catch (error) {
-      showError('$error');
-    }
-  }
 
   void showError(String text) {
     showErrorDialog(context, text);
@@ -54,6 +25,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
 
   @override
   Widget build(BuildContext context) {
+    final appointmentProvider =
+        Provider.of<AppointmentProvider>(context, listen: false);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +54,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.pharmacist,
+                            widget.appointment.pharmacist,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 18),
                           ),
@@ -89,7 +62,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                             height: 5,
                           ),
                           Text(
-                            widget.pharmacy,
+                            widget.appointment.pharmacy,
                             style: const TextStyle(color: Colors.black),
                           ),
                         ],
@@ -100,8 +73,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     height: 10,
                   ),
                   ScheduleCard(
-                    date: widget.date,
-                    time: widget.time,
+                    date: widget.appointment.date,
+                    time: widget.appointment.time,
                   ),
                   const SizedBox(
                     height: 10,
@@ -127,7 +100,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                       action: SnackBarAction(
                                         label: 'Undo',
                                         onPressed: () {
-                                          updateStatus('upcoming');
+                                          appointmentProvider.updateStatus(
+                                              widget.appointment, 'upcoming');
                                           setState(
                                             () {
                                               isUpcoming = true;
@@ -148,7 +122,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () {
-                                  updateStatus('canceled');
+                                  appointmentProvider.updateStatus(
+                                      widget.appointment, 'canceled');
                                   setState(() {
                                     isCanceled = true;
                                     isUpcoming = false;
@@ -186,7 +161,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                       action: SnackBarAction(
                                         label: 'Undo',
                                         onPressed: () {
-                                          updateStatus('upcoming');
+                                          appointmentProvider.updateStatus(
+                                              widget.appointment, 'upcoming');
                                           setState(
                                             () {
                                               isUpcoming = true;
@@ -209,7 +185,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () {
-                                  updateStatus('completed');
+                                  appointmentProvider.updateStatus(
+                                      widget.appointment, 'completed');
                                   setState(
                                     () {
                                       isCompleted = true;
@@ -242,7 +219,7 @@ class ScheduleCard extends StatelessWidget {
   const ScheduleCard({Key? key, required this.date, required this.time})
       : super(key: key);
 
-  final Timestamp date;
+  final DateTime date;
   final String time;
 
   @override
@@ -266,7 +243,7 @@ class ScheduleCard extends StatelessWidget {
             width: 5,
           ),
           Text(
-            '${date.toDate().day}/${date.toDate().month}/${date.toDate().year}',
+            '${date.day}/${date.month}/${date.year}',
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           Expanded(child: Container()),
@@ -280,8 +257,11 @@ class ScheduleCard extends StatelessWidget {
           ),
           Flexible(
               child: Text(
-            '${time}0',
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            time.endsWith('0') ? '${time}0' : time,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
           ))
         ],
       ),

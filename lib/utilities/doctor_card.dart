@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/models/pharmacist_model.dart';
 import 'package:health_watch/screens/pharmacist_details_screen.dart';
 
 class DoctorCard extends StatelessWidget {
-  const DoctorCard(
-      {Key? key,
-      required this.name,
-      required this.pharmacy,
-      required this.rating})
-      : super(key: key);
+  const DoctorCard({Key? key, required this.pharmacist}) : super(key: key);
 
-  final String name;
-  final String pharmacy;
-  final double rating;
+  final PharmacistModel pharmacist;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +33,12 @@ class DoctorCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dr. $name',
+                        'Dr. ${pharmacist.name}',
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        pharmacy,
+                        pharmacist.pharmacy,
                         style: const TextStyle(fontSize: 15),
                       ),
                       const Spacer(),
@@ -59,7 +53,7 @@ class DoctorCard extends StatelessWidget {
                           const Spacer(
                             flex: 1,
                           ),
-                          Text('$rating'),
+                          Text('${pharmacist.rating}'),
                           const SizedBox(
                             width: 10,
                           ),
@@ -81,9 +75,16 @@ class DoctorCard extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return PharmacistDetailsScreen(name: name);
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return PharmacistDetailsScreen(
+                  pharmacist: pharmacist,
+                );
+              },
+            ),
+          );
         },
       ),
     );

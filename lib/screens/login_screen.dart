@@ -1,8 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_watch/constants/user_data.dart';
-import 'package:health_watch/constants/user_preferences.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:health_watch/constants/routes.dart';
 
@@ -124,8 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     String password = passwordController.text;
                     final form = formKey.currentState!;
                     if (form.validate()) {}
-                    final userData = await getUserData(email);
-                    await storeUserDataInSharedPrefs(email, userData);
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: email, password: password);
                     pushReplacementRoute(logicRoute);

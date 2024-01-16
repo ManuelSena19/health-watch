@@ -1,6 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/models/appointment_model.dart';
+import 'package:health_watch/models/pharmacist_model.dart';
+import 'package:health_watch/providers/appointment_provider.dart';
+import 'package:health_watch/providers/pharmacist_provider.dart';
+import 'package:health_watch/utilities/show_error_dialog.dart';
+import 'package:provider/provider.dart';
 import '../utilities/appbar_widget.dart';
 import '../utilities/appointment_card.dart';
 import '../utilities/doctor_card.dart';
@@ -16,10 +21,31 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DateTime now = DateTime.now();
   String patient = FirebaseAuth.instance.currentUser!.email.toString();
+
+  Future<void> loadData() async {}
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Timestamp today =
-        Timestamp.fromDate(DateTime.utc(now.year, now.month, now.day));
+    final pharmacistProvider =
+        Provider.of<PharmacistProvider>(context, listen: false);
+    List<PharmacistModel> t5Pharmacists = pharmacistProvider.t5Pharmacists;
+    final appointmentProvider =
+        Provider.of<AppointmentProvider>(context, listen: false);
+    List<AppointmentModel> appointments = appointmentProvider.appointments;
+    List<AppointmentModel> todayAppointments = [];
+    for (AppointmentModel appointmentModel in appointments) {
+      if (appointmentModel.date
+          .isAtSameMomentAs(DateTime(now.year, now.month, now.day, 0, 0, 0))) {
+        todayAppointments.add(appointmentModel);
+      } else {
+        continue;
+      }
+    }
     return Scaffold(
       appBar: appbarWidget('Search'),
       drawer: drawerWidget(context),
@@ -68,42 +94,23 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(
               height: 20,
             ),
-            StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('appointments')
-                  .where('patient', isEqualTo: patient)
-                  .snapshots(),
+            FutureBuilder(
+              future: appointmentProvider.getUserAppointments(patient),
               builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasData) {
-                  final appointments = snapshot.data!.docs;
-                  if (appointments.isNotEmpty) {
-                    final todayAppointments = appointments.where((appointment) {
-                      Timestamp firestoreTimestamp = appointment['date'];
-                      return firestoreTimestamp.toDate().isAtSameMomentAs(
-                            DateTime(now.year, now.month, now.day, 0, 0, 0),
-                          );
-                    }).toList();
-                    if (todayAppointments.isNotEmpty) {
-                      return Column(
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox();
+                } else if (snapshot.hasError) {
+                  showErrorDialog(context, '${snapshot.error}');
+                }
+                return todayAppointments.isNotEmpty
+                    ? Column(
                         children: todayAppointments.map((appointment) {
                           return AppointmentCard(
-                            date: appointment['date'] ?? today,
-                            patient: patient,
-                            pharmacist: appointment['pharmacist'] ?? '',
-                            pharmacy: appointment['pharmacy'] ?? '',
-                            time: appointment['time'] ?? '',
+                            appointment: appointment,
                           );
                         }).toList(),
-                      );
-                    } else {
-                      return const Center(
+                      )
+                    : const Center(
                         child: Text(
                           "You don't have any appointments today",
                           style: TextStyle(
@@ -112,13 +119,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                         ),
                       );
-                    }
-                  } else {
-                    return const SizedBox(height: 1);
-                  }
-                } else {
-                  return const SizedBox(height: 1);
-                }
               },
             ),
             const SizedBox(
@@ -133,10 +133,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 Expanded(child: Container()),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const SeeMore();
-                    }));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const SeeMore();
+                      }),
+                    );
                   },
                   child: const Text(
                     'See More...',
@@ -145,44 +147,24 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 1000,
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('pharmacists')
-                    .orderBy('rating', descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(
-                      child: SizedBox(
-                        height: 10,
-                        width: 10,
-                        child: CircularProgressIndicator(),
-                      ),
+            FutureBuilder(
+              future: pharmacistProvider.getT5Pharmacists(),
+              builder: (context, snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const SizedBox();
+                }
+                else if(snapshot.hasError){
+                  showErrorDialog(context, '${snapshot.error}');
+                }
+                return Column(
+                  children: List.generate(5, (index) {
+                    final pharmacist = t5Pharmacists[index];
+                    return DoctorCard(
+                      pharmacist: pharmacist,
                     );
-                  } else {
-                    try {
-                      final pharmacists = snapshot.data!.docs;
-                      return Column(
-                        children: List.generate(5, (index) {
-                          final pharmacist = pharmacists[index];
-                          return DoctorCard(
-                            name: pharmacist['name'] ?? '',
-                            pharmacy: pharmacist['pharmacy'] ?? '',
-                            rating: pharmacist['rating'] ?? 0.0,
-                          );
-                        }),
-                      );
-                    } catch (e) {
-                      return const SizedBox();
-                    }
-                  }
-                },
-              ),
+                  }),
+                );
+              },
             ),
           ],
         ),
@@ -196,6 +178,9 @@ class SeeMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pharmacistProvider =
+        Provider.of<PharmacistProvider>(context, listen: false);
+    List<PharmacistModel> pharmacists = pharmacistProvider.pharmacists;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -207,33 +192,23 @@ class SeeMore extends StatelessWidget {
           size: 30,
         ),
       ),
-      body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('pharmacists').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SizedBox(
-                height: 10,
-                width: 10,
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else {
-            final pharmacists = snapshot.data!.docs;
-            return ListView(
-              children: List.generate(pharmacists.length, (index) {
-                final pharmacist = pharmacists[index];
-                return DoctorCard(
-                  name: pharmacist['name'] ?? '',
-                  pharmacy: pharmacist['pharmacy'] ?? '',
-                  rating: pharmacist['rating'] ?? 0.0,
-                );
-              }),
-            );
+      body: FutureBuilder(
+        future: pharmacistProvider.getPharmacists(),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const SizedBox();
           }
+          else if(snapshot.hasError){
+            showErrorDialog(context, '${snapshot.error}');
+          }
+          return ListView(
+            children: List.generate(pharmacists.length, (index) {
+              final pharmacist = pharmacists[index];
+              return DoctorCard(
+                pharmacist: pharmacist,
+              );
+            }),
+          );
         },
       ),
     );

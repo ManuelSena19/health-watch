@@ -7,3 +7,7 @@ void pushRoute(BuildContext context, String route){
 void pushReplacementRoute(BuildContext context, String route){
   Navigator.pushReplacementNamed(context, route);
 }
+
+void popRoute(BuildContext context){
+  Navigator.pop(context);
+}

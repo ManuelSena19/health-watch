@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:health_watch/constants/logic.dart';
+import 'package:health_watch/providers/appointment_provider.dart';
+import 'package:health_watch/providers/pharmacist_provider.dart';
+import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/screens/booking_screen.dart';
 import 'package:health_watch/screens/calendar_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
@@ -14,6 +17,7 @@ import 'package:health_watch/screens/successful_booking_screen.dart';
 import 'package:health_watch/screens/verify_email_screen.dart';
 import 'constants/routes.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,32 +32,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: FirebaseAuth.instance.currentUser == null
-          ? loginRoute
-          : homescreenRoute,
-      title: 'Health Watch',
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PharmacistProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AppointmentProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: FirebaseAuth.instance.currentUser == null
+            ? loginRoute
+            : homescreenRoute,
+        title: 'Health Watch',
+        theme: ThemeData(
+          primarySwatch: Colors.lightBlue,
+        ),
+        routes: {
+          loginRoute: (context) => const LoginScreen(),
+          logicRoute: (context) => const Logic(),
+          registerRoute: (context) => const RegisterScreen(),
+          verifyEmailRoute: (context) => const VerifyEmailScreen(),
+          resetPasswordRoute: (context) => const ResetPasswordScreen(),
+          homescreenRoute: (context) => MainNavigationScreen(index: 0),
+          profileRoute: (context) => MainNavigationScreen(index: 4),
+          editProfileRoute: (context) => const EditProfileScreen(),
+          appointmentRoute: (context) => MainNavigationScreen(index: 2),
+          successRoute: (context) => const AppointmentBooked(),
+          chatRoute: (context) => MainNavigationScreen(index: 3),
+          settingsRoute: (context) => const SettingsScreen(),
+          calendarRoute: (context) => const CalendarScreen(),
+          bookingRoute: (context) => const BookingScreen(),
+          searchRoute: (context) => MainNavigationScreen(index: 1),
+        },
       ),
-      routes: {
-        loginRoute: (context) => const LoginScreen(),
-        logicRoute: (context) => const Logic(),
-        registerRoute: (context) => const RegisterScreen(),
-        verifyEmailRoute: (context) => const VerifyEmailScreen(),
-        resetPasswordRoute: (context) => const ResetPasswordScreen(),
-        homescreenRoute: (context) => MainNavigationScreen(index: 0),
-        profileRoute: (context) => MainNavigationScreen(index: 4),
-        editProfileRoute: (context) => const EditProfileScreen(),
-        appointmentRoute: (context) => MainNavigationScreen(index: 2),
-        successRoute: (context) => const AppointmentBooked(),
-        chatRoute: (context) => MainNavigationScreen(index: 3),
-        settingsRoute: (context) => const SettingsScreen(),
-        calendarRoute: (context) => const CalendarScreen(),
-        bookingRoute: (context) => const BookingScreen(),
-        searchRoute: (context) => MainNavigationScreen(index: 1),
-      },
     );
   }
 }
