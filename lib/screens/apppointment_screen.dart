@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
@@ -33,7 +35,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     appointmentProvider =
-    Provider.of<AppointmentProvider>(context, listen: false);
+        Provider.of<AppointmentProvider>(context, listen: false);
     appointments = appointmentProvider.appointments;
     filteredAppointments =
         appointmentProvider.filterAppointments(appointments, statusString);
@@ -49,10 +51,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         } else if (snapshot.hasError) {
           showErrorDialog(context, '${snapshot.error}');
         }
-        print(appointments);
         return appointments.isNotEmpty
             ? Scaffold(
-                appBar: appbarWidget('Appointments'),
+                appBar: appbarWidget('Appointments', Colors.transparent),
                 drawer: drawerWidget(context),
                 body: SafeArea(
                   child: Padding(
@@ -96,7 +97,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 filteredAppointments =
                                     appointmentProvider.filterAppointments(
                                         appointments, statusString);
-                                print(filteredAppointments);
                               } catch (e) {
                                 showErrorDialog(
                                     context, "You don't have any appointments");
@@ -226,7 +226,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     } on RangeError {
                                       return const SizedBox();
                                     } catch (e) {
-                                      print('Error: $e');
+                                      log('Error: $e');
                                       rethrow;
                                     }
                                   },
@@ -242,7 +242,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 ),
               )
             : Scaffold(
-                appBar: appbarWidget('Appointments'),
+                appBar: appbarWidget('Appointments', Colors.transparent),
                 body: Center(
                   child: SizedBox(
                     width: 500,

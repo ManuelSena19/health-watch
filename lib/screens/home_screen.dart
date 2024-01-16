@@ -1,14 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_watch/constants/push_routes.dart';
 import 'package:health_watch/constants/routes.dart';
+import 'package:health_watch/models/appointment_model.dart';
+import 'package:health_watch/models/pharmacist_model.dart';
+import 'package:health_watch/models/user_model.dart';
+import 'package:health_watch/providers/appointment_provider.dart';
+import 'package:health_watch/providers/pharmacist_provider.dart';
+import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/screens/apppointment_screen.dart';
 // import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/search_screen.dart';
-import 'package:health_watch/utilities/appbar_widget.dart';
 import 'package:health_watch/utilities/drawer_widget.dart';
 import 'package:health_watch/utilities/stack_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../utilities/doctor_card.dart';
+import '../utilities/show_error_dialog.dart';
 
 final List<Widget> _screens = [
   const HomeScreen(),
@@ -18,7 +28,7 @@ final List<Widget> _screens = [
   const ProfileScreen(),
 ];
 
-class MainNavigationScreen extends StatefulWidget{
+class MainNavigationScreen extends StatefulWidget {
   MainNavigationScreen({Key? key, this.index}) : super(key: key);
 
   int? index;
@@ -36,7 +46,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: _screens[widget.index ?? _currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: widget.index ?? _currentIndex,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             widget.index = null;
             _currentIndex = index;
@@ -75,7 +85,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 }
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -84,63 +93,191 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late AppointmentProvider appointmentProvider;
+  late UserProvider userProvider;
+  late PharmacistProvider pharmacistProvider;
+  final String _email = FirebaseAuth.instance.currentUser!.email.toString();
+  final controller = PageController(viewportFraction: 0.8, keepPage: true);
+
+  @override
+  void initState() {
+    super.initState();
+    appointmentProvider =
+        Provider.of<AppointmentProvider>(context, listen: false);
+    appointmentProvider.getUserAppointments(_email);
+    userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.getUserData(_email);
+    pharmacistProvider =
+        Provider.of<PharmacistProvider>(context, listen: false);
+    pharmacistProvider.getPharmacists();
+    pharmacistProvider.getT5Pharmacists();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  String introText() {
+    int hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning,';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Good Afternoon,';
+    } else {
+      return 'Good evening,';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<AppointmentModel> appointments = appointmentProvider.appointments;
+    UserModel user = userProvider.user;
+    List<AppointmentModel> filteredAppointments =
+        appointmentProvider.filterAppointments(appointments, 'upcoming');
+    List<PharmacistModel> t5Pharmacists = pharmacistProvider.t5Pharmacists;
+    List<Widget> stacks = [
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: GestureDetector(
+          child: stackWidget(
+            "assets/home.jpeg",
+            'Talk to a licensed pharmacist',
+          ),
+          onTap: () {
+            pushRoute(context, searchRoute);
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: GestureDetector(
+          child: stackWidget(
+            'assets/calendar.jpg',
+            'Check your appointments',
+          ),
+          onTap: () {
+            pushRoute(context, appointmentRoute);
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: GestureDetector(
+          child: stackWidget(
+            'assets/pharmacy.jpg',
+            'Find pharmacies near you',
+          ),
+          onTap: () {
+            pushRoute(context, searchRoute);
+          },
+        ),
+      ),
+    ];
     return Scaffold(
-      appBar: appbarWidget('Health Watch'),
       drawer: drawerWidget(context),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            GestureDetector(
-              child: stackWidget(
-                "assets/home.jpeg",
-                'Click here to talk to a licensed pharmacist',
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: ClipOval(
+                child: Image.network(
+                  user.imagePath,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
               ),
-              onTap: () {
-                pushRoute(context, searchRoute);
-              },
+              title: Text(
+                introText(),
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              subtitle: Text(
+                user.username,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.lightBlue,
+                ),
+              ),
+              trailing: const IconButton(
+                icon: Icon(
+                  Icons.notifications_none,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: null,
+              ),
             ),
             const SizedBox(
-              height: 15,
+              height: 5,
             ),
-            GestureDetector(
-              child: stackWidget(
-                'assets/calendar.jpg',
-                'Click here to check your appointments',
+            Text(
+              'You have ${filteredAppointments.length} upcoming appointments',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
-              onTap: () {
-                pushRoute(context, appointmentRoute);
-              },
             ),
             const SizedBox(
-              height: 15,
+              height: 20,
             ),
-            GestureDetector(
-              child: stackWidget(
-                'assets/chat.jpeg',
-                'Click here to check your chats',
+            SizedBox(
+              height: 350,
+              child: PageView.builder(
+                padEnds: true,
+                pageSnapping: false,
+                itemCount: stacks.length,
+                controller: controller,
+                itemBuilder: (context, index) {
+                  return stacks[index];
+                },
               ),
-              onTap: () {
-                pushRoute(context, chatRoute);
-              },
             ),
             const SizedBox(
               height: 10,
             ),
-            GestureDetector(
-              child: stackWidget(
-                'assets/pharmacy.jpg',
-                'Click here to find pharmacies near you',
+            Center(
+              child: SmoothPageIndicator(
+                controller: controller,
+                count: 3,
+                effect: const ExpandingDotsEffect(
+                  dotColor: Colors.grey,
+                  spacing: 20,
+                  activeDotColor: Colors.lightBlue,
+                ),
               ),
-              onTap: () {
-                pushRoute(context, searchRoute);
-              },
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
+            ),
+            const Text(
+              "Top Pharmacists",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            FutureBuilder(
+              future: pharmacistProvider.getT5Pharmacists(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox();
+                } else if (snapshot.hasError) {
+                  showErrorDialog(context, '${snapshot.error}');
+                }
+                return Column(
+                  children: List.generate(5, (index) {
+                    final pharmacist = t5Pharmacists[index];
+                    return DoctorCard(
+                      pharmacist: pharmacist,
+                    );
+                  }),
+                );
+              },
             ),
           ],
         ),

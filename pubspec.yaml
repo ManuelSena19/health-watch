@@ -27,6 +27,8 @@ dependencies:
   table_calendar: ^3.0.9
   lottie: ^2.3.2
   provider: ^6.1.1
+  smooth_page_indicator: ^1.1.0
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:

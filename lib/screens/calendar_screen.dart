@@ -31,7 +31,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     print(_appointments);
     print(_appointmentDates);
     return Scaffold(
-      appBar: appbarWidget('Calendar'),
+      appBar: appbarWidget('Calendar', Colors.transparent),
       drawer: drawerWidget(context),
       body: ListView(
         children: [

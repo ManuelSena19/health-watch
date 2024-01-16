@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Widget stackWidget(String assetName, String text) {
   return Container(
     height: 350,
+    width: 700,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       gradient: const LinearGradient(
@@ -24,7 +25,10 @@ Widget stackWidget(String assetName, String text) {
         const SizedBox(height: 10),
         Text(
           text,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
           textAlign: TextAlign.center,
         ),
       ],

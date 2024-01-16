@@ -47,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     }
     return Scaffold(
-      appBar: appbarWidget('Search'),
+      appBar: appbarWidget('Search', Colors.transparent),
       drawer: drawerWidget(context),
       body: Padding(
         padding: const EdgeInsets.all(10),

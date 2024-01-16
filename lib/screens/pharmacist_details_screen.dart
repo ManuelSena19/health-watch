@@ -55,7 +55,7 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
     }
 
     return Scaffold(
-      appBar: appbarWidget("Pharmacist Details"),
+      appBar: appbarWidget("Pharmacist Details", Colors.transparent),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [

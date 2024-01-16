@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
-        appBar: appbarWidget('Profile'),
+        appBar: appbarWidget('Profile', Colors.lightBlue),
         drawer: drawerWidget(context),
         body: FutureBuilder(
           future: userProvider.getUserData(_email),
