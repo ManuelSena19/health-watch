@@ -14,7 +14,7 @@ class UserProvider with ChangeNotifier {
     gender: 'gender',
     healthConditions: 'healthConditions',
     height: 'height',
-    imagePath: 'imagePath',
+    imagePath: 'https://th.bing.com/th/id/R.e62421c9ba5aeb764163aaccd64a9583?rik=DzXjlnhTgV5CvA&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_210318.png&ehk=952QCsChZS0znBch2iju8Vc%2fS2aIXvqX%2f0zrwkjJ3GA%3d&risl=&pid=ImgRaw&r=0',
     month: 'month',
     username: 'username',
     weight: 'weight',

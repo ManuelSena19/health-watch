@@ -104,13 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     appointmentProvider =
         Provider.of<AppointmentProvider>(context, listen: false);
-    appointmentProvider.getUserAppointments(_email);
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.getUserData(_email);
     pharmacistProvider =
         Provider.of<PharmacistProvider>(context, listen: false);
-    pharmacistProvider.getPharmacists();
-    pharmacistProvider.getT5Pharmacists();
   }
 
   @override
@@ -131,11 +127,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<AppointmentModel> appointments = appointmentProvider.appointments;
-    UserModel user = userProvider.user;
-    List<AppointmentModel> filteredAppointments =
-        appointmentProvider.filterAppointments(appointments, 'upcoming');
-    List<PharmacistModel> t5Pharmacists = pharmacistProvider.t5Pharmacists;
     List<Widget> stacks = [
       Padding(
         padding: const EdgeInsets.only(right: 20),
@@ -181,49 +172,83 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: ClipOval(
-                child: Image.network(
-                  user.imagePath,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(
-                introText(),
-                style: const TextStyle(
-                  fontSize: 15,
-                  color: Colors.blueGrey,
-                ),
-              ),
-              subtitle: Text(
-                user.username,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.lightBlue,
-                ),
-              ),
-              trailing: const IconButton(
-                icon: Icon(
-                  Icons.notifications_none,
-                  color: Colors.black,
-                  size: 30,
-                ),
-                onPressed: null,
-              ),
+            FutureBuilder(
+              future: userProvider.getUserData(_email),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  showErrorDialog(context, 'Error: ${snapshot.error}');
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const SizedBox();
+                } else {
+                  final UserModel user = userProvider.user;
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: GestureDetector(
+                      onTap: (){
+                        Scaffold.of(context).openDrawer();
+                      },
+                      child: ClipOval(
+                        child: Image.network(
+                          user.imagePath,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      introText(),
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                    subtitle: Text(
+                      user.username,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlue,
+                      ),
+                    ),
+                    trailing: const IconButton(
+                      icon: Icon(
+                        Icons.notifications_none,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      onPressed: null,
+                    ),
+                  );
+                }
+                return const SizedBox(
+                  height: 5,
+                );
+              },
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              'You have ${filteredAppointments.length} upcoming appointments',
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+            FutureBuilder(
+              future: appointmentProvider.getUserAppointments(_email),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  showErrorDialog(context, '${snapshot.error}');
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const SizedBox();
+                }
+                List<AppointmentModel> appointments =
+                    appointmentProvider.appointments;
+                List<AppointmentModel> filteredAppointments =
+                    appointmentProvider.filterAppointments(
+                        appointments, 'upcoming');
+                return Text(
+                  'You have ${filteredAppointments.length} upcoming ${filteredAppointments.length == 1 ? 'appointment' : 'appointments'}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: 20,
@@ -269,6 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (snapshot.hasError) {
                   showErrorDialog(context, '${snapshot.error}');
                 }
+                List<PharmacistModel> t5Pharmacists =
+                    pharmacistProvider.t5Pharmacists;
                 return Column(
                   children: List.generate(5, (index) {
                     final pharmacist = t5Pharmacists[index];

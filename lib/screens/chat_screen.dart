@@ -16,7 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarWidget('Chats'),
+      appBar: appbarWidget('Chats', Colors.transparent),
       drawer: drawerWidget(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),

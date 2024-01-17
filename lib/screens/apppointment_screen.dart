@@ -188,7 +188,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                 children: [
                                                   Expanded(
                                                     child: OutlinedButton(
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        appointmentProvider.updateStatus(schedule, 'canceled');
+                                                      },
                                                       child: const Text(
                                                         'Cancel',
                                                         style: TextStyle(
