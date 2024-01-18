@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,7 +40,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void pop() {
-    Navigator.pop(context);
+    Navigator.popAndPushNamed(context, profileRoute);
   }
 
   void showError(String text) {

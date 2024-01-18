@@ -236,7 +236,7 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                         if (time == null) {
                           showError('Please enter a time');
                         } else {
-                          String selectedTime = '${time.hour}:${time.minute}';
+                          DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
                           String patient = FirebaseAuth
                               .instance.currentUser!.email
                               .toString();
@@ -244,12 +244,11 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                           String pharmacy = widget.pharmacist.pharmacy;
                           String status = 'upcoming';
                           AppointmentModel newAppointment = AppointmentModel(
-                            date: date,
+                            date: dateTime,
                             patient: patient,
                             pharmacist: pharmacist,
                             pharmacy: pharmacy,
                             status: status,
-                            time: selectedTime,
                           );
                           appointmentProvider.bookAppointment(newAppointment);
                           push(successRoute);

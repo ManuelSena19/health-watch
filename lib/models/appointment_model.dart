@@ -6,7 +6,6 @@ class AppointmentModel with ChangeNotifier{
   final String pharmacist;
   final String pharmacy;
   final String status;
-  final String time;
 
   AppointmentModel({
     required this.date,
@@ -14,6 +13,5 @@ class AppointmentModel with ChangeNotifier{
     required this.pharmacist,
     required this.pharmacy,
     required this.status,
-    required this.time,
 });
 }

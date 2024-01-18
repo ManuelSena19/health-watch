@@ -176,7 +176,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                               ),
                                               ScheduleCard(
                                                 date: schedule.date,
-                                                time: schedule.time,
                                               ),
                                               const SizedBox(
                                                 height: 10,

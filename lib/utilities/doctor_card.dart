@@ -11,7 +11,7 @@ class DoctorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      height: 200,
+      height: 230,
       child: GestureDetector(
         child: Card(
           elevation: 3,
@@ -19,7 +19,8 @@ class DoctorCard extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 180,
+                width: 200,
+                height: 230,
                 child: Image.asset(
                   "assets/user.jpg",
                   fit: BoxFit.fill,
@@ -50,21 +51,10 @@ class DoctorCard extends StatelessWidget {
                             color: Colors.yellow,
                             size: 30,
                           ),
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          Text('${pharmacist.rating}'),
                           const SizedBox(
                             width: 10,
                           ),
-                          const Text('Reviews'),
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          const Text('(20)'),
-                          const Spacer(
-                            flex: 7,
-                          ),
+                          Text('${pharmacist.rating}'),
                         ],
                       ),
                     ],

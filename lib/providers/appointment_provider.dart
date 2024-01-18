@@ -29,7 +29,6 @@ class AppointmentProvider with ChangeNotifier {
           pharmacist: doc['pharmacist'] as String,
           pharmacy: doc['pharmacy'] as String,
           status: doc['status'] as String,
-          time: doc['time'] as String,
         );
 
         if(appointmentModel.date.isBefore(DateTime.now()) && appointmentModel.status == 'upcoming'){
@@ -55,7 +54,6 @@ class AppointmentProvider with ChangeNotifier {
           .where('pharmacy', isEqualTo: appointmentModel.pharmacy)
           .where('pharmacist', isEqualTo: appointmentModel.pharmacist)
           .where('date', isEqualTo: appointmentModel.date)
-          .where('time', isEqualTo: appointmentModel.time)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -80,7 +78,6 @@ class AppointmentProvider with ChangeNotifier {
           .where('pharmacy', isEqualTo: appointmentModel.pharmacy)
           .where('pharmacist', isEqualTo: appointmentModel.pharmacist)
           .where('date', isEqualTo: appointmentModel.date)
-          .where('time', isEqualTo: appointmentModel.time)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -131,7 +128,6 @@ class AppointmentProvider with ChangeNotifier {
         'pharmacist': newAppointment.pharmacist,
         'pharmacy': newAppointment.pharmacy,
         'status': newAppointment.status,
-        'time': newAppointment.time
       });
       getUserAppointments(newAppointment.patient);
     } catch (error) {

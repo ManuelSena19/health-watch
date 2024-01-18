@@ -74,7 +74,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   ),
                   ScheduleCard(
                     date: widget.appointment.date,
-                    time: widget.appointment.time,
                   ),
                   const SizedBox(
                     height: 10,
@@ -216,11 +215,10 @@ class _AppointmentCardState extends State<AppointmentCard> {
 }
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({Key? key, required this.date, required this.time})
+  const ScheduleCard({Key? key, required this.date})
       : super(key: key);
 
   final DateTime date;
-  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +244,7 @@ class ScheduleCard extends StatelessWidget {
             '${date.day}/${date.month}/${date.year}',
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
-          Expanded(child: Container()),
+          const Spacer(),
           const Icon(
             Icons.access_alarm_outlined,
             color: Colors.white,
@@ -256,13 +254,14 @@ class ScheduleCard extends StatelessWidget {
             width: 5,
           ),
           Flexible(
-              child: Text(
-            time.endsWith('0') ? '${time}0' : time,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
+            child: Text(
+              '${date.hour}:${date.minute}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
             ),
-          ))
+          ),
         ],
       ),
     );

@@ -8,6 +8,7 @@ import 'package:health_watch/providers/pharmacist_provider.dart';
 import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/screens/booking_screen.dart';
 import 'package:health_watch/screens/calendar_screen.dart';
+import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/edit_profile_screen.dart';
 import 'package:health_watch/screens/home_screen.dart';
 import 'package:health_watch/screens/login_screen.dart';
@@ -66,11 +67,11 @@ class MyApp extends StatelessWidget {
           verifyEmailRoute: (context) => const VerifyEmailScreen(),
           resetPasswordRoute: (context) => const ResetPasswordScreen(),
           homescreenRoute: (context) => MainNavigationScreen(index: 0),
-          profileRoute: (context) => MainNavigationScreen(index: 4),
+          profileRoute: (context) => MainNavigationScreen(index: 3),
           editProfileRoute: (context) => const EditProfileScreen(),
           appointmentRoute: (context) => MainNavigationScreen(index: 2),
           successRoute: (context) => const AppointmentBooked(),
-          chatRoute: (context) => MainNavigationScreen(index: 3),
+          chatRoute: (context) =>  const ChatScreen(),
           settingsRoute: (context) => const SettingsScreen(),
           calendarRoute: (context) => const CalendarScreen(),
           bookingRoute: (context) => const BookingScreen(),
