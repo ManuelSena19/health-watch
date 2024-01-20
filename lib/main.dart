@@ -27,10 +27,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const MyApp(),
-    )
+    // DevicePreview(
+    //   enabled: true,
+    //   builder: (context) =>
+      const MyApp(),
+    // )
   );
 }
 

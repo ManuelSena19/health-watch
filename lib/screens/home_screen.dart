@@ -10,6 +10,7 @@ import 'package:health_watch/providers/appointment_provider.dart';
 import 'package:health_watch/providers/pharmacist_provider.dart';
 import 'package:health_watch/providers/user_provider.dart';
 import 'package:health_watch/screens/apppointment_screen.dart';
+import 'package:health_watch/screens/loading_screen.dart';
 // import 'package:health_watch/screens/chat_screen.dart';
 import 'package:health_watch/screens/profile_screen.dart';
 import 'package:health_watch/screens/search_screen.dart';
@@ -185,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Scaffold.of(context).openDrawer();
                       },
                       child: ClipOval(
@@ -254,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
             ),
             SizedBox(
-              height: 350,
+              height: 300,
               child: PageView.builder(
                 padEnds: true,
                 pageSnapping: false,
@@ -282,9 +283,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 15,
             ),
-            const Text(
-              "Top Pharmacists",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Top Pharmacists",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                Icon(Icons.arrow_forward_ios)
+              ],
             ),
             FutureBuilder(
               future: pharmacistProvider.getT5Pharmacists(),
@@ -296,13 +303,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
                 List<PharmacistModel> t5Pharmacists =
                     pharmacistProvider.t5Pharmacists;
-                return Column(
-                  children: List.generate(5, (index) {
-                    final pharmacist = t5Pharmacists[index];
-                    return DoctorCard(
-                      pharmacist: pharmacist,
-                    );
-                  }),
+                return SizedBox(
+                  height: 300,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: List.generate(5, (index) {
+                      final pharmacist = t5Pharmacists[index];
+                      return DoctorCardSmall(
+                        pharmacist: pharmacist,
+                      );
+                    }),
+                  ),
                 );
               },
             ),

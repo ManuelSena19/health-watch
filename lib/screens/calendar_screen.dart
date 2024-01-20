@@ -26,7 +26,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<dynamic> _getAppointmentsForDay(){
     List<String> appointments = _events.value[_selectedDay] ?? [];
-    print('Appointments for $_selectedDay: $appointments');
     return appointments;
   }
 
@@ -65,8 +64,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           } else if (snapshot.hasError) {
             showErrorDialog(context, '${snapshot.error}');
           }
-          print('Appointments: $_appointments');
-          print('Events: ${_events.value}');
+
           return ListView(
             children: [
               ValueListenableBuilder(

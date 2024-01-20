@@ -18,7 +18,7 @@ Widget stackWidget(String assetName, String text) {
           child: Image(
             image: AssetImage(assetName),
             width: double.infinity,
-            height: 300,
+            height: 250,
             fit: BoxFit.cover,
           ),
         ),

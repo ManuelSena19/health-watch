@@ -129,6 +129,7 @@ class AppointmentProvider with ChangeNotifier {
         'status': newAppointment.status,
       });
       getUserAppointments(newAppointment.patient);
+      notifyListeners();
     } catch (error) {
       rethrow;
     }

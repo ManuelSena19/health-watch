@@ -22,6 +22,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DateTime now = DateTime.now();
   String patient = FirebaseAuth.instance.currentUser!.email.toString();
+  final SearchController controller = SearchController();
 
   Future<void> loadData() async {}
 
@@ -45,36 +46,52 @@ class _SearchScreenState extends State<SearchScreen> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            SearchAnchor(builder: (context, SearchController controller) {
-              return SearchBar(
-                controller: controller,
-                hintText: 'Search for pharmacists and pharmacies near you',
-                hintStyle: MaterialStateProperty.all(
-                    const TextStyle(color: Colors.grey)),
-                elevation: MaterialStateProperty.all(1),
-                padding: const MaterialStatePropertyAll<EdgeInsets>(
-                    EdgeInsets.symmetric(horizontal: 8)),
-                onTap: () {
-                  controller.openView();
-                },
-                onChanged: (_) {
-                  controller.openView();
-                },
-                leading: const Icon(Icons.search),
-              );
-            }, suggestionsBuilder: (context, SearchController controller) {
-              return List<ListTile>.generate(5, (int index) {
-                final String item = 'pharmacist ${index + 1}';
-                return ListTile(
-                  title: Text(item),
-                  onTap: () {
-                    setState(() {
-                      controller.closeView(item);
-                    });
-                  },
-                );
-              });
-            }),
+            // SearchAnchor(builder: (context, SearchController controller) {
+            //   return SearchBar(
+            //     controller: controller,
+            //     hintText: 'Search for pharmacists and pharmacies near you',
+            //     hintStyle: MaterialStateProperty.all(
+            //         const TextStyle(color: Colors.grey)),
+            //     elevation: MaterialStateProperty.all(1),
+            //     padding: const MaterialStatePropertyAll<EdgeInsets>(
+            //         EdgeInsets.symmetric(horizontal: 8)),
+            //     onTap: () {
+            //       controller.openView();
+            //     },
+            //     onChanged: (_) {
+            //       controller.openView();
+            //     },
+            //     leading: const Icon(Icons.search),
+            //   );
+            // }, suggestionsBuilder: (context, SearchController controller) {
+            //   return List<ListTile>.generate(5, (int index) {
+            //     final String item = 'pharmacist ${index + 1}';
+            //     return ListTile(
+            //       title: Text(item),
+            //       onTap: () {
+            //         setState(() {
+            //           controller.closeView(item);
+            //         });
+            //       },
+            //     );
+            //   });
+            // }),
+            SearchBar(
+              controller: controller,
+              hintText: 'Search for pharmacists and pharmacies near you',
+              hintStyle: MaterialStateProperty.all(
+                  const TextStyle(color: Colors.grey)),
+              elevation: MaterialStateProperty.all(1),
+              padding: const MaterialStatePropertyAll<EdgeInsets>(
+                  EdgeInsets.symmetric(horizontal: 8)),
+              onTap: () {
+                controller.openView();
+              },
+              onChanged: (_) {
+                controller.openView();
+              },
+              leading: const Icon(Icons.search),
+            ),
             const SizedBox(
               height: 10,
             ),

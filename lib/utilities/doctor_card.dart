@@ -80,3 +80,69 @@ class DoctorCard extends StatelessWidget {
     );
   }
 }
+
+class DoctorCardSmall extends StatelessWidget {
+  const DoctorCardSmall({super.key, required this.pharmacist});
+
+  final PharmacistModel pharmacist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      height: 230,
+      width: 220,
+      child: GestureDetector(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 220,
+              height: 220,
+              child: Image.asset(
+                "assets/user.jpg",
+                fit: BoxFit.fill,
+              ),
+            ),
+            Text(
+              'Dr. ${pharmacist.name}',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.local_hospital_outlined,
+                  color: Colors.lightBlue,
+                ),
+                Text(
+                  pharmacist.pharmacy,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return PharmacistDetailsScreen(
+                  pharmacist: pharmacist,
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

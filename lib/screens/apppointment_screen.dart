@@ -98,6 +98,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           height: 20,
                         ),
                         SegmentedButton(
+                          showSelectedIcon: false,
                           segments: const [
                             ButtonSegment(
                                 value: FilterStatus.upcoming,
