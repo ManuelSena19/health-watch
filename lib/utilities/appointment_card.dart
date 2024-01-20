@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:health_watch/constants/push_routes.dart';
+import 'package:health_watch/constants/routes.dart';
 import 'package:health_watch/models/appointment_model.dart';
 import 'package:health_watch/providers/appointment_provider.dart';
 import 'package:health_watch/utilities/show_error_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentCard extends StatefulWidget {
   const AppointmentCard({Key? key, required this.appointment})
@@ -54,7 +57,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.appointment.pharmacist,
+                            'Dr. ${widget.appointment.pharmacist}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 18),
                           ),
@@ -107,6 +110,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                               isCanceled = false;
                                             },
                                           );
+                                          pushRoute(context, homescreenRoute);
                                         },
                                       ),
                                     ),
@@ -134,6 +138,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                       ),
                                     ),
                                   );
+                                  pushRoute(context, homescreenRoute);
                                 },
                               ),
                       ),
@@ -168,6 +173,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                               isCompleted = false;
                                             },
                                           );
+                                          pushRoute(context, homescreenRoute);
                                         },
                                       ),
                                     ),
@@ -199,6 +205,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                       ),
                                     ),
                                   );
+                                  pushRoute(context, homescreenRoute);
                                 },
                               ),
                       ),
@@ -222,6 +229,8 @@ class ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+    DateFormat timeFormat = DateFormat('hh:mm a');
     return Container(
       decoration: BoxDecoration(
         color: Colors.lightBlueAccent,
@@ -241,7 +250,7 @@ class ScheduleCard extends StatelessWidget {
             width: 5,
           ),
           Text(
-            '${date.day}/${date.month}/${date.year}',
+            dateFormat.format(date),
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           const Spacer(),
@@ -255,7 +264,7 @@ class ScheduleCard extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              '${date.hour}:${date.minute}',
+              timeFormat.format(date),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,

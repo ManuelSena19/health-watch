@@ -10,6 +10,7 @@ import '../utilities/appbar_widget.dart';
 import '../utilities/appointment_card.dart';
 import '../utilities/doctor_card.dart';
 import '../utilities/drawer_widget.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -36,16 +37,6 @@ class _SearchScreenState extends State<SearchScreen> {
     List<PharmacistModel> t5Pharmacists = pharmacistProvider.t5Pharmacists;
     final appointmentProvider =
         Provider.of<AppointmentProvider>(context, listen: false);
-    List<AppointmentModel> appointments = appointmentProvider.appointments;
-    List<AppointmentModel> todayAppointments = [];
-    for (AppointmentModel appointmentModel in appointments) {
-      if (appointmentModel.date
-          .isAtSameMomentAs(DateTime(now.year, now.month, now.day, 0, 0, 0))) {
-        todayAppointments.add(appointmentModel);
-      } else {
-        continue;
-      }
-    }
     return Scaffold(
       appBar: appbarWidget('Search', Colors.transparent),
       drawer: drawerWidget(context),
@@ -102,8 +93,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 } else if (snapshot.hasError) {
                   showErrorDialog(context, '${snapshot.error}');
                 }
+                List<AppointmentModel> appointments =
+                    appointmentProvider.appointments;
+                List<AppointmentModel> todayAppointments = [];
+                for (AppointmentModel appointmentModel in appointments) {
+                  if (isSameDay(appointmentModel.date, DateTime.now()) &&
+                      appointmentModel.status == 'upcoming') {
+                    todayAppointments.add(appointmentModel);
+                  } else {
+                    continue;
+                  }
+                }
                 return todayAppointments.isNotEmpty
                     ? Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: todayAppointments.map((appointment) {
                           return AppointmentCard(
                             appointment: appointment,
@@ -149,11 +152,10 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             FutureBuilder(
               future: pharmacistProvider.getT5Pharmacists(),
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox();
-                }
-                else if(snapshot.hasError){
+                } else if (snapshot.hasError) {
                   showErrorDialog(context, '${snapshot.error}');
                 }
                 return Column(
@@ -194,11 +196,10 @@ class SeeMore extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: pharmacistProvider.getPharmacists(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox();
-          }
-          else if(snapshot.hasError){
+          } else if (snapshot.hasError) {
             showErrorDialog(context, '${snapshot.error}');
           }
           return ListView(

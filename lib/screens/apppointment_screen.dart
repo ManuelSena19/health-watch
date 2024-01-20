@@ -31,6 +31,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   late AppointmentProvider appointmentProvider;
   List<AppointmentModel> appointments = [];
 
+  Future<DateTime?> pickDate() {
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.utc(2025),
+    );
+  }
+
+  Future<TimeOfDay?> pickTime() {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: TimeOfDay.now().hour,
+        minute: TimeOfDay.now().minute,
+      ),
+    );
+  }
+
+  void showError(String error) {
+    showErrorDialog(context, error);
+  }
+
+  void push(String route) {
+    pushRoute(context, route);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -180,46 +207,101 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                               const SizedBox(
                                                 height: 10,
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: OutlinedButton(
-                                                      onPressed: () {
-                                                        appointmentProvider.updateStatus(schedule, 'canceled');
-                                                      },
-                                                      child: const Text(
-                                                        'Cancel',
-                                                        style: TextStyle(
-                                                          color: Colors
-                                                              .lightBlueAccent,
+                                              schedule.status == 'upcoming'
+                                                  ? Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: OutlinedButton(
+                                                            onPressed: () {
+                                                              appointmentProvider
+                                                                  .updateStatus(
+                                                                      schedule,
+                                                                      'canceled');
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                  content: Text(
+                                                                    'The appointment has been canceled',
+                                                                  ),
+                                                                ),
+                                                              );
+                                                              push(homescreenRoute);
+                                                            },
+                                                            child: const Text(
+                                                              'Cancel',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .lightBlueAccent,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Expanded(
-                                                    child: OutlinedButton(
-                                                      style: OutlinedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .lightBlueAccent,
-                                                      ),
-                                                      onPressed: () {},
-                                                      child: const Text(
-                                                        'Reschedule',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
+                                                        const SizedBox(
+                                                          width: 15,
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                                        Expanded(
+                                                          child: OutlinedButton(
+                                                            style:
+                                                                OutlinedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .lightBlueAccent,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              final date =
+                                                                  await pickDate();
+                                                              if (date ==
+                                                                  null) {
+                                                                showError(
+                                                                    'Please enter a date');
+                                                              } else {
+                                                                final time =
+                                                                    await pickTime();
+                                                                if (time ==
+                                                                    null) {
+                                                                  showError(
+                                                                      'Please enter a time');
+                                                                } else {
+                                                                  DateTime dateTime = DateTime(
+                                                                      date.year,
+                                                                      date.month,
+                                                                      date.day,
+                                                                      time.hour,
+                                                                      time.minute);
+                                                                  appointmentProvider
+                                                                      .rescheduleAppointment(
+                                                                          schedule,
+                                                                          dateTime);
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    SnackBar(
+                                                                      content: Text(
+                                                                          'Your appointment has been scheduled for $date at $time'),
+                                                                    ),
+                                                                  );
+                                                                  push(homescreenRoute);
+                                                                }
+                                                              }
+                                                            },
+                                                            child: const Text(
+                                                              'Reschedule',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : const SizedBox(height: 5)
                                             ],
                                           ),
                                         ),

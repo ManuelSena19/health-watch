@@ -68,7 +68,7 @@ class AppointmentProvider with ChangeNotifier {
   }
 
   Future<void> rescheduleAppointment(
-      AppointmentModel appointmentModel, DateTime date, String time) async {
+      AppointmentModel appointmentModel, DateTime date) async {
     try {
       final appointmentRef =
           FirebaseFirestore.instance.collection('appointments');
@@ -84,7 +84,6 @@ class AppointmentProvider with ChangeNotifier {
         final appointmentDoc = querySnapshot.docs.first;
         await appointmentDoc.reference.update({
           'date': date,
-          'time': time,
         });
         notifyListeners();
         getUserAppointments(appointmentModel.patient);

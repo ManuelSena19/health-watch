@@ -20,39 +20,67 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   final email = FirebaseAuth.instance.currentUser!.email.toString();
   List<AppointmentModel> _appointments = [];
-  Map<DateTime, List<String>> _events = {};
+  final ValueNotifier<Map<DateTime, List<String>>> _events = ValueNotifier({});
+  DateTime? _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+
+  List<dynamic> _getAppointmentsForDay(){
+    List<String> appointments = _events.value[_selectedDay] ?? [];
+    print('Appointments for $_selectedDay: $appointments');
+    return appointments;
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusDay){
+    if(!isSameDay(_selectedDay, selectedDay)){
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusDay;
+      });
+    }
+  }
+
+  Future<void> loadEvents() async {
+    final appointmentProvider = Provider.of<AppointmentProvider>(context, listen: false);
+    await appointmentProvider.getUserAppointments(email);
+    _appointments = appointmentProvider.appointments;
+    Map<DateTime, List<String>> events = {};
+    for (var appointment in _appointments) {
+      DateTime date = appointment.date;
+      events[date] ??= [];
+      events[date] = ['Dr. ${appointment.pharmacist}'];
+    }
+    _events.value = events;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final appointmentProvider =
-    Provider.of<AppointmentProvider>(context, listen: false);
     return Scaffold(
       appBar: appbarWidget('Calendar', Colors.transparent),
       drawer: drawerWidget(context),
       body: FutureBuilder(
-        future: appointmentProvider.getUserAppointments(email),
+        future: loadEvents(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            showErrorDialog(context, '${snapshot.error}');
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox();
+          } else if (snapshot.hasError) {
+            showErrorDialog(context, '${snapshot.error}');
           }
-          _appointments = appointmentProvider.appointments;
-          print(_appointments);
-          _events = {};
-          for (var appointment in _appointments) {
-            DateTime date = appointment.date;
-            _events[date] ??= [];
-            _events[date] = ['Dr. ${appointment.pharmacist}'];
-          }
-          print(_events);
+          print('Appointments: $_appointments');
+          print('Events: ${_events.value}');
           return ListView(
             children: [
-              TableCalendar(
-                focusedDay: DateTime.now(),
-                firstDay: DateTime.now(),
-                lastDay: DateTime.utc(2030),
-                eventLoader: (date) => _events[date] ?? [],
+              ValueListenableBuilder(
+                valueListenable: _events,
+                builder: (context, _, __) {
+                  return TableCalendar(
+                    focusedDay: _focusedDay,
+                    onDaySelected: _onDaySelected,
+                    firstDay: DateTime.now(),
+                    lastDay: DateTime.utc(2030),
+                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                    eventLoader: (day) => _getAppointmentsForDay(),
+                  );
+                },
               )
             ],
           );

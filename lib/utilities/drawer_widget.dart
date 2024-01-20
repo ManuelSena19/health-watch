@@ -91,14 +91,6 @@ Widget drawerWidget(BuildContext context) {
                   pushRoute(context, homescreenRoute);
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.calendar_month_outlined),
-                title: const Text("Calendar"),
-                iconColor: Colors.lightBlue,
-                onTap: () {
-                  pushRoute(context, calendarRoute);
-                },
-              ),
               const Divider(
                 height: 10,
                 thickness: 3,
