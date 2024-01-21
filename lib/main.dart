@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
         title: 'Health Watch',
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
+          primaryColor: Colors.lightBlue,
         ),
         routes: {
           loginRoute: (context) => const LoginScreen(),

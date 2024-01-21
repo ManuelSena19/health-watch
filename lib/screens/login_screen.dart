@@ -44,10 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        elevation: 0,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -80,10 +76,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      labelText: 'E-mail',
-                      prefixIcon: Icon(Icons.email)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    labelText: 'E-mail',
+                    prefixIcon: Icon(Icons.email),
+                  ),
                 ),
               ),
             ),
@@ -147,7 +144,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       "Sign In",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.lightBlue,
+                      ),
                     ),
                   ),
                 ),
@@ -163,7 +163,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   child: const Text(
                     'Sign Up',
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.lightBlue,
+                    ),
                   ),
                   onPressed: () {
                     pushReplacementRoute(registerRoute);
@@ -172,13 +175,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             TextButton(
-                onPressed: () {
-                  pushRoute(resetPasswordRoute);
-                },
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(fontSize: 15),
-                )),
+              onPressed: () {
+                pushRoute(resetPasswordRoute);
+              },
+              child: const Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.lightBlue,
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -93,10 +93,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        elevation: 0,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder(
@@ -538,7 +534,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Text(
                               "Register",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.lightBlue,
+                              ),
                             ),
                           ),
                         ),
@@ -554,7 +553,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         TextButton(
                           child: const Text(
                             'Sign In',
-                            style: TextStyle(fontSize: 15),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.lightBlue,
+                            ),
                           ),
                           onPressed: () {
                             pushReplacementRoute(loginRoute);

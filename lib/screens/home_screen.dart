@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   showErrorDialog(context, 'Error: ${snapshot.error}');
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return const LoadingScreen();
+                  return const SizedBox();
                 } else {
                   final UserModel user = userProvider.user;
                   return ListTile(
