@@ -106,7 +106,7 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                               ),
                               IconButton(
                                 onPressed: () {},
-                                icon: const Icon(Icons.menu),
+                                icon: const Icon(Icons.more_vert_rounded),
                                 color: Colors.black,
                               ),
                             ],
@@ -236,7 +236,8 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                         if (time == null) {
                           showError('Please enter a time');
                         } else {
-                          DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+                          DateTime dateTime = DateTime(date.year, date.month,
+                              date.day, time.hour, time.minute);
                           String patient = FirebaseAuth
                               .instance.currentUser!.email
                               .toString();
@@ -256,10 +257,9 @@ class _PharmacistDetailsScreenState extends State<PharmacistDetailsScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: Colors.lightBlue,
-                      foregroundColor: Colors.white
-                    ),
+                        elevation: 0,
+                        backgroundColor: Colors.lightBlue,
+                        foregroundColor: Colors.white),
                     child: const Text("Book appointment"),
                   ),
                 ),
@@ -291,9 +291,11 @@ class InfoCard extends StatelessWidget {
             Text(
               label,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold),
+                color: Colors.black,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+              softWrap: false,
             ),
             const SizedBox(
               height: 10,

@@ -233,7 +233,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Container(
                 height: 60,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 80),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -286,9 +286,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     }
                   },
                   child: Container(
-                    width: 150,
+                    width: 300,
                     decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(10),),
                     child: const Text(
                       "Save Changes",
                       textAlign: TextAlign.center,

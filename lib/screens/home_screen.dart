@@ -58,7 +58,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         selectedItemColor: Colors.lightBlue,
         unselectedItemColor: Colors.grey,
         iconSize: 30,
-        elevation: 0,
+        elevation: 10,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.home),
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   showErrorDialog(context, 'Error: ${snapshot.error}');
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return const SizedBox();
+                  return const LoadingScreen();
                 } else {
                   final UserModel user = userProvider.user;
                   return ListTile(
